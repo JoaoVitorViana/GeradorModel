@@ -8,5 +8,7 @@ pode ser gerado selecionando apenas a tabela do banco de dados (SQL Server, MySQ
 * Classe de conexão com SQLite C#
 
 # Release
+* 1.0.0.1
+Correção SQLite
 * 1.0.0.0
 Versão Inicial
