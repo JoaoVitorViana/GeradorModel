@@ -1,6 +1,6 @@
 # Util
 Gerador de Model nas linguagens C# ou Java
-Podem ser geradas selecionando apenas a tabela do banco de dados (SQL Server, MySQL ou SQLite)
+pode ser gerado selecionando apenas a tabela do banco de dados (SQL Server, MySQL ou SQLite)
 
 # Conexão DB
 * Classe de conexão com SQLServer C#
