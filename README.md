@@ -7,11 +7,6 @@ Podem ser geradas selecionando apenas a tabela do banco de dados (SQL Server, My
 * Classe de conexão com MySql C#
 * Classe de conexão com SQLite C#
 
-# Serasa
-Consulta Serasa
-
 # Release
-* 1.0.0.6
-Ajustes na geração do model
-* 1.0.0.5
+* 1.0.0.0
 Versão Inicial
