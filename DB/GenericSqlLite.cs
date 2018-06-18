@@ -9,10 +9,12 @@ namespace DB
     {
         private string ParametroBanco = ":";
         private SqlLite dbConexao;
+
         public GenericSqlLite(string pServidor)
         {
             dbConexao = new SqlLite(pServidor);
         }
+
         public List<T> GetSelect<T>(string pComando, List<DBParametros> pParametros)
         {
             try
@@ -25,6 +27,7 @@ namespace DB
                 throw ex;
             }
         }
+
         public T Salvar<T>(T pObjeto)
         {
             try
@@ -41,6 +44,7 @@ namespace DB
                 throw ex;
             }
         }
+
         public string Deletar<T>(T pObjeto)
         {
             try
@@ -54,6 +58,7 @@ namespace DB
                 throw ex;
             }
         }
+
         public List<T> GetItens<T>(List<Parametro> pParametros, int pTop = 0, string pOrderBy = "")
         {
             StringBuilder sbQuery = new StringBuilder();
@@ -79,6 +84,7 @@ namespace DB
 
             return GetSelect<T>(sbQuery.ToString(), pmts);
         }
+
         public T GetItem<T>(List<Parametro> pParametros)
         {
             try

@@ -15,8 +15,7 @@ namespace Pragma
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("package " + pPacote + ";");
 			sb.AppendLine("");
-			int tipoDate = tabela.Campos.Where(c => c.Tipo.Java.Contains("Date")).Count();
-			if (tipoDate > 0)
+			if (tabela.Campos.Where(c => c.Tipo.Java.Contains("Date")).Count() > 0)
 			{
 				sb.AppendLine("import java.util.Date;");
 				sb.AppendLine("");

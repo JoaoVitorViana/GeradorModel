@@ -9,14 +9,17 @@ namespace DB
     {
         private SqlServer Conexao;
         private string ParametroBanco = "@";
+
         public GenericSqlServer(string pServidor, string pDataBase = "master")
         {
             Conexao = new SqlServer(pServidor, pDataBase);
         }
+
         public GenericSqlServer(string pServidor, string pDataBase, string pUsuario, string pSenha)
         {
             Conexao = new SqlServer(pServidor, pDataBase, pUsuario, pSenha);
         }
+
         public List<T> GetSelect<T>(string pComando, List<DBParametros> pParametros)
         {
             try
@@ -29,6 +32,7 @@ namespace DB
                 throw ex;
             }
         }
+
         public T Salvar<T>(T pObjeto, string pSchema = "dbo")
         {
             try
@@ -45,6 +49,7 @@ namespace DB
                 throw ex;
             }
         }
+
         public string Deletar<T>(T pObjeto, string pSchema = "dbo")
         {
             try
@@ -58,6 +63,7 @@ namespace DB
                 throw ex;
             }
         }
+
         public List<T> GetItens<T>(List<Parametro> pParametros, int pTop = 0, string pOrderBy = "", string pSchema = "dbo")
         {
             StringBuilder sbQuery = new StringBuilder();
@@ -81,6 +87,7 @@ namespace DB
 
             return GetSelect<T>(sbQuery.ToString(), pmts);
         }
+
         public T GetItem<T>(List<Parametro> pParametros, string pSchema = "dbo")
         {
             try
