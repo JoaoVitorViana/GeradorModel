@@ -67,7 +67,7 @@ namespace Utilidades
 			return usuario;
 		}
 
-		private bool ValidaGeracao(out DB.TpBanco tipoDB)
+		private bool Validacao(out DB.TpBanco tipoDB, bool pValidarGeracao = false)
 		{
 			tipoDB = DB.TpBanco.Nenhum;
 			if (!rbBanco.Checked && !rbQuery.Checked)
@@ -101,6 +101,28 @@ namespace Utilidades
 				return false;
 			}
 
+			if (pValidarGeracao)
+			{
+				if (comboBanco.SelectedIndex == -1)
+				{
+					MessageBox.Show("DataBase não selecionado, Verifique!");
+					return false;
+				}
+
+				if (comboLinguagem.SelectedIndex == -1)
+				{
+					MessageBox.Show("Linguagem não selecionada, Verifique!");
+					return false;
+				}
+
+				if (string.IsNullOrWhiteSpace(txtPacote.Text))
+				{
+					MessageBox.Show(lbPacote.Text.Replace(":", "") + " não informado, Verifique!");
+					txtPacote.Focus();
+					return false;
+				}
+			}
+
 			switch (comboDB.SelectedItem.ToString())
 			{
 				case "Sql Server":
@@ -119,26 +141,8 @@ namespace Utilidades
 			try
 			{
 				DB.TpBanco tipoDB;
-				if (ValidaGeracao(out tipoDB))
+				if (Validacao(out tipoDB, true))
 				{
-					if (comboBanco.SelectedIndex == -1)
-					{
-						MessageBox.Show("DataBase não selecionado, Verifique!");
-						return;
-					}
-
-					if (comboLinguagem.SelectedIndex == -1)
-					{
-						MessageBox.Show("Linguagem não selecionada, Verifique!");
-						return;
-					}
-
-					if (string.IsNullOrWhiteSpace(txtPacote.Text))
-					{
-						MessageBox.Show(lbPacote.Text.Replace(":", "") + " não informado, Verifique!");
-						txtPacote.Focus();
-						return;
-					}
 
 					if (rbBanco.Checked)
 					{
@@ -151,7 +155,7 @@ namespace Utilidades
 						switch (comboLinguagem.SelectedItem.ToString())
 						{
 							case "C#":
-								Pragma.CSharp.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario());
+								Pragma.CSharp.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), pDataAnnotations: cbDataAnnotations.Checked);
 								break;
 							case "Java":
 								Pragma.Java.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario());
@@ -232,10 +236,14 @@ namespace Utilidades
 					case "C#":
 						lbPacote.Text = "Namespace:";
 						txtPacote.Text = "";
+						cbDataAnnotations.Checked = true;
+						cbDataAnnotations.Enabled = true;
 						break;
 					case "Java":
 						lbPacote.Text = "Package:";
 						txtPacote.Text = "";
+						cbDataAnnotations.Checked = false;
+						cbDataAnnotations.Enabled = false;
 						break;
 				}
 			}
@@ -292,7 +300,7 @@ namespace Utilidades
 			try
 			{
 				DB.TpBanco tipoDB;
-				if (ValidaGeracao(out tipoDB))
+				if (Validacao(out tipoDB))
 				{
 					if (tipoDB == DB.TpBanco.SqlServer)
 						ComboBanco(Pragma.SqlServer.GetBancos(txtServidor.Text.Trim(), RetornaUsuario()), true);
@@ -313,27 +321,8 @@ namespace Utilidades
 			try
 			{
 				DB.TpBanco tipoDB;
-				if (ValidaGeracao(out tipoDB))
+				if (Validacao(out tipoDB, true))
 				{
-					if (comboBanco.SelectedIndex == -1)
-					{
-						MessageBox.Show("DataBase não selecionado, Verifique!");
-						return;
-					}
-
-					if (comboLinguagem.SelectedIndex == -1)
-					{
-						MessageBox.Show("Linguagem não selecionada, Verifique!");
-						return;
-					}
-
-					if (string.IsNullOrWhiteSpace(txtPacote.Text))
-					{
-						MessageBox.Show(lbPacote.Text.Replace(":", "") + " não informado, Verifique!");
-						txtPacote.Focus();
-						return;
-					}
-
 					if (rbBanco.Checked)
 					{
 						if (comboTabela.SelectedIndex == -1)

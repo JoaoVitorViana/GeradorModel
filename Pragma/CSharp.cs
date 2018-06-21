@@ -14,33 +14,40 @@ namespace Pragma
 			Arquivos.Gerar(sb.ToString(), "POST");
 		}
 
-		public static void GerarModel(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, Model.UserDB pUsuario, bool pQuery = false, string pComando = null)
+		public static void GerarModel(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, Model.UserDB pUsuario, bool pQuery = false, string pComando = null, bool pDataAnnotations = false)
 		{
 			Tabela tabela = Util.GetTabela(pTpBanco, pTabela, pServidor, pBanco, pUsuario, pQuery, pComando);
 
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("using System;");
-			sb.AppendLine("using System.ComponentModel.DataAnnotations;");
-			sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
+			if (pDataAnnotations)
+			{
+				sb.AppendLine("using System.ComponentModel.DataAnnotations;");
+				sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
+			}
 			sb.AppendLine("");
 			sb.AppendLine("namespace " + pNamespace);
 			sb.AppendLine("{");
-			sb.AppendLine($"    [Table(\"{tabela.Nome}\", Schema = \"{tabela.Schema}\")]");
+			if (pDataAnnotations)
+				sb.AppendLine($"    [Table(\"{tabela.Nome}\", Schema = \"{tabela.Schema}\")]");
 			sb.AppendLine($"    public partial class {tabela.Nome}");
 			sb.AppendLine("    {");
 
 			tabela.Campos.ForEach((campo) =>
 			{
-				if (campo.Chave)
-					sb.AppendLine("        [Key]");
-				else if (campo.NotNull)
-					sb.AppendLine("        [Required(ErrorMessage = \"*Campo obrigatório.\")]");
-				if (campo.Tipo.Banco.ToLower().Equals("date"))
-					sb.AppendLine("        [DisplayFormat(DataFormatString = \"{0:dd/MM/yyyy}\", ApplyFormatInEditMode = true)]");
-				if (campo.Tipo.Banco.ToLower().Equals("datetime"))
-					sb.AppendLine("        [DisplayFormat(DataFormatString = \"{0:d}\", ApplyFormatInEditMode = true)]");
-				else if (campo.Tipo.CSharp.ToLower().Equals("string") && campo.Tipo.Tamanho > 1 && campo.Tipo.Tamanho < 4000)
-					sb.AppendLine($"        [StringLength({campo.Tipo.Tamanho}, ErrorMessage = \"Você atingiu o limite máximo de {campo.Tipo.Tamanho} caracteres permitidos.\")]");
+				if (pDataAnnotations)
+				{
+					if (campo.Chave)
+						sb.AppendLine("        [Key]");
+					else if (campo.NotNull)
+						sb.AppendLine("        [Required(ErrorMessage = \"*Campo obrigatório.\")]");
+					if (campo.Tipo.Banco.ToLower().Equals("date"))
+						sb.AppendLine("        [DisplayFormat(DataFormatString = \"{0:dd/MM/yyyy}\", ApplyFormatInEditMode = true)]");
+					if (campo.Tipo.Banco.ToLower().Equals("datetime"))
+						sb.AppendLine("        [DisplayFormat(DataFormatString = \"{0:d}\", ApplyFormatInEditMode = true)]");
+					else if (campo.Tipo.CSharp.ToLower().Equals("string") && campo.Tipo.Tamanho > 1 && campo.Tipo.Tamanho < 4000)
+						sb.AppendLine($"        [StringLength({campo.Tipo.Tamanho}, ErrorMessage = \"Você atingiu o limite máximo de {campo.Tipo.Tamanho} caracteres permitidos.\")]");
+				}
 				sb.AppendLine($"        public {campo.Tipo.CSharp} {campo.Nome} " + "{ get; set; }");
 			});
 

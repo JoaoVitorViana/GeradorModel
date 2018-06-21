@@ -59,6 +59,7 @@
 			this.comboTipoLogon = new System.Windows.Forms.ComboBox();
 			this.btnDataBases = new System.Windows.Forms.Button();
 			this.btnGerarRepository = new System.Windows.Forms.Button();
+			this.cbDataAnnotations = new System.Windows.Forms.CheckBox();
 			this.plQuery.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
@@ -117,7 +118,7 @@
 			// 
 			this.label4.AutoSize = true;
 			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label4.Location = new System.Drawing.Point(12, 184);
+			this.label4.Location = new System.Drawing.Point(9, 98);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(62, 16);
 			this.label4.TabIndex = 19;
@@ -127,7 +128,7 @@
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(12, 212);
+			this.label1.Location = new System.Drawing.Point(9, 212);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(72, 16);
 			this.label1.TabIndex = 22;
@@ -150,7 +151,7 @@
 			// 
 			this.label2.AutoSize = true;
 			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label2.Location = new System.Drawing.Point(12, 242);
+			this.label2.Location = new System.Drawing.Point(9, 242);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(55, 16);
 			this.label2.TabIndex = 24;
@@ -172,7 +173,7 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label3.Location = new System.Drawing.Point(12, 68);
+			this.label3.Location = new System.Drawing.Point(9, 68);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(78, 16);
 			this.label3.TabIndex = 25;
@@ -205,7 +206,7 @@
 			// btnGerarModel
 			// 
 			this.btnGerarModel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnGerarModel.Location = new System.Drawing.Point(12, 346);
+			this.btnGerarModel.Location = new System.Drawing.Point(12, 373);
 			this.btnGerarModel.Name = "btnGerarModel";
 			this.btnGerarModel.Size = new System.Drawing.Size(146, 29);
 			this.btnGerarModel.TabIndex = 29;
@@ -225,7 +226,7 @@
 			// 
 			this.lbPacote.AutoSize = true;
 			this.lbPacote.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.lbPacote.Location = new System.Drawing.Point(12, 272);
+			this.lbPacote.Location = new System.Drawing.Point(9, 272);
 			this.lbPacote.Name = "lbPacote";
 			this.lbPacote.Size = new System.Drawing.Size(86, 16);
 			this.lbPacote.TabIndex = 31;
@@ -235,7 +236,7 @@
 			// 
 			this.label5.AutoSize = true;
 			this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label5.Location = new System.Drawing.Point(12, 13);
+			this.label5.Location = new System.Drawing.Point(9, 11);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(114, 16);
 			this.label5.TabIndex = 32;
@@ -245,7 +246,7 @@
 			// 
 			this.label6.AutoSize = true;
 			this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(12, 38);
+			this.label6.Location = new System.Drawing.Point(9, 38);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(61, 16);
 			this.label6.TabIndex = 33;
@@ -280,7 +281,7 @@
 			// pictureBox1
 			// 
 			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-			this.pictureBox1.Location = new System.Drawing.Point(2, 297);
+			this.pictureBox1.Location = new System.Drawing.Point(2, 325);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(508, 192);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -291,7 +292,7 @@
 			// 
 			this.label9.AutoSize = true;
 			this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label9.Location = new System.Drawing.Point(12, 128);
+			this.label9.Location = new System.Drawing.Point(9, 156);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(58, 16);
 			this.label9.TabIndex = 39;
@@ -301,7 +302,7 @@
 			// 
 			this.label10.AutoSize = true;
 			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label10.Location = new System.Drawing.Point(12, 158);
+			this.label10.Location = new System.Drawing.Point(9, 184);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(50, 16);
 			this.label10.TabIndex = 41;
@@ -311,7 +312,7 @@
 			// 
 			this.label11.AutoSize = true;
 			this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label11.Location = new System.Drawing.Point(12, 98);
+			this.label11.Location = new System.Drawing.Point(9, 128);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(80, 16);
 			this.label11.TabIndex = 42;
@@ -321,7 +322,7 @@
 			// 
 			this.txtUsuario.Enabled = false;
 			this.txtUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtUsuario.Location = new System.Drawing.Point(146, 125);
+			this.txtUsuario.Location = new System.Drawing.Point(146, 153);
 			this.txtUsuario.Name = "txtUsuario";
 			this.txtUsuario.Size = new System.Drawing.Size(364, 22);
 			this.txtUsuario.TabIndex = 45;
@@ -330,7 +331,7 @@
 			// 
 			this.txtSenha.Enabled = false;
 			this.txtSenha.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtSenha.Location = new System.Drawing.Point(146, 153);
+			this.txtSenha.Location = new System.Drawing.Point(146, 181);
 			this.txtSenha.Name = "txtSenha";
 			this.txtSenha.PasswordChar = '*';
 			this.txtSenha.Size = new System.Drawing.Size(364, 22);
@@ -339,7 +340,7 @@
 			// txtServidor
 			// 
 			this.txtServidor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.txtServidor.Location = new System.Drawing.Point(146, 181);
+			this.txtServidor.Location = new System.Drawing.Point(146, 95);
 			this.txtServidor.Name = "txtServidor";
 			this.txtServidor.Size = new System.Drawing.Size(364, 22);
 			this.txtServidor.TabIndex = 47;
@@ -353,7 +354,7 @@
 			this.comboTipoLogon.Items.AddRange(new object[] {
             "Windows Authentication",
             "User/Senha"});
-			this.comboTipoLogon.Location = new System.Drawing.Point(146, 95);
+			this.comboTipoLogon.Location = new System.Drawing.Point(146, 125);
 			this.comboTipoLogon.Name = "comboTipoLogon";
 			this.comboTipoLogon.Size = new System.Drawing.Size(364, 24);
 			this.comboTipoLogon.TabIndex = 48;
@@ -363,7 +364,7 @@
 			// btnDataBases
 			// 
 			this.btnDataBases.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDataBases.Location = new System.Drawing.Point(12, 311);
+			this.btnDataBases.Location = new System.Drawing.Point(12, 338);
 			this.btnDataBases.Name = "btnDataBases";
 			this.btnDataBases.Size = new System.Drawing.Size(146, 29);
 			this.btnDataBases.TabIndex = 49;
@@ -374,7 +375,7 @@
 			// btnGerarRepository
 			// 
 			this.btnGerarRepository.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnGerarRepository.Location = new System.Drawing.Point(12, 381);
+			this.btnGerarRepository.Location = new System.Drawing.Point(12, 408);
 			this.btnGerarRepository.Name = "btnGerarRepository";
 			this.btnGerarRepository.Size = new System.Drawing.Size(146, 29);
 			this.btnGerarRepository.TabIndex = 50;
@@ -382,11 +383,25 @@
 			this.btnGerarRepository.UseVisualStyleBackColor = true;
 			this.btnGerarRepository.Click += new System.EventHandler(this.btnGerarRepository_Click);
 			// 
+			// cbDataAnnotations
+			// 
+			this.cbDataAnnotations.AutoSize = true;
+			this.cbDataAnnotations.Checked = true;
+			this.cbDataAnnotations.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbDataAnnotations.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cbDataAnnotations.Location = new System.Drawing.Point(12, 299);
+			this.cbDataAnnotations.Name = "cbDataAnnotations";
+			this.cbDataAnnotations.Size = new System.Drawing.Size(128, 20);
+			this.cbDataAnnotations.TabIndex = 53;
+			this.cbDataAnnotations.Text = "Data annotations";
+			this.cbDataAnnotations.UseVisualStyleBackColor = true;
+			// 
 			// FormBanco
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1121, 522);
+			this.ClientSize = new System.Drawing.Size(1121, 525);
+			this.Controls.Add(this.cbDataAnnotations);
 			this.Controls.Add(this.btnGerarRepository);
 			this.Controls.Add(this.btnDataBases);
 			this.Controls.Add(this.comboTipoLogon);
@@ -459,5 +474,6 @@
         private System.Windows.Forms.ComboBox comboTipoLogon;
         private System.Windows.Forms.Button btnDataBases;
 		private System.Windows.Forms.Button btnGerarRepository;
+		private System.Windows.Forms.CheckBox cbDataAnnotations;
 	}
 }
