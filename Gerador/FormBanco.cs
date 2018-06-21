@@ -238,12 +238,16 @@ namespace Utilidades
 						txtPacote.Text = "";
 						cbDataAnnotations.Checked = true;
 						cbDataAnnotations.Enabled = true;
+						cbAspNetCore.Enabled = true;
+						cbAspNetCore.Checked = false;
 						break;
 					case "Java":
 						lbPacote.Text = "Package:";
 						txtPacote.Text = "";
 						cbDataAnnotations.Checked = false;
 						cbDataAnnotations.Enabled = false;
+						cbAspNetCore.Enabled = false;
+						cbAspNetCore.Checked = false;
 						break;
 				}
 			}
@@ -334,7 +338,7 @@ namespace Utilidades
 						switch (comboLinguagem.SelectedItem.ToString())
 						{
 							case "C#":
-								Pragma.CSharp.GerarRepository(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario());
+								Pragma.CSharp.GerarRepository(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), cbAspNetCore.Checked);
 								break;
 							case "Java":
 								throw new NotImplementedException();

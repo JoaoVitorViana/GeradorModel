@@ -60,6 +60,7 @@
 			this.btnDataBases = new System.Windows.Forms.Button();
 			this.btnGerarRepository = new System.Windows.Forms.Button();
 			this.cbDataAnnotations = new System.Windows.Forms.CheckBox();
+			this.cbAspNetCore = new System.Windows.Forms.CheckBox();
 			this.plQuery.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
@@ -396,11 +397,23 @@
 			this.cbDataAnnotations.Text = "Data annotations";
 			this.cbDataAnnotations.UseVisualStyleBackColor = true;
 			// 
+			// cbAspNetCore
+			// 
+			this.cbAspNetCore.AutoSize = true;
+			this.cbAspNetCore.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cbAspNetCore.Location = new System.Drawing.Point(146, 299);
+			this.cbAspNetCore.Name = "cbAspNetCore";
+			this.cbAspNetCore.Size = new System.Drawing.Size(107, 20);
+			this.cbAspNetCore.TabIndex = 54;
+			this.cbAspNetCore.Text = "Asp.Net Core";
+			this.cbAspNetCore.UseVisualStyleBackColor = true;
+			// 
 			// FormBanco
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1121, 525);
+			this.Controls.Add(this.cbAspNetCore);
 			this.Controls.Add(this.cbDataAnnotations);
 			this.Controls.Add(this.btnGerarRepository);
 			this.Controls.Add(this.btnDataBases);
@@ -475,5 +488,6 @@
         private System.Windows.Forms.Button btnDataBases;
 		private System.Windows.Forms.Button btnGerarRepository;
 		private System.Windows.Forms.CheckBox cbDataAnnotations;
+		private System.Windows.Forms.CheckBox cbAspNetCore;
 	}
 }
