@@ -25,6 +25,7 @@ namespace Pragma
 				case "timestamp":
 				case "varbinary":
 					this.CSharp = "byte[]";
+					this.Java = "byte[]";
 					break;
 				case "date":
 				case "datetime":
@@ -46,6 +47,7 @@ namespace Pragma
 					break;
 				case "real":
 					this.CSharp = "Single";
+					this.Java = "float";
 					break;
 				case "smallint":
 					this.CSharp = "Int16" + (pNotNull ? "" : "?");
@@ -75,6 +77,7 @@ namespace Pragma
 					break;
 				case "time":
 					this.CSharp = "TimeSpan";
+					this.Java = "java.sql.Time";
 					break;
 				case "xml":
 					this.CSharp = "Xml";

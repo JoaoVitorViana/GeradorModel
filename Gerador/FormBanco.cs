@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Utilidades
@@ -9,7 +10,8 @@ namespace Utilidades
 		public FormBanco()
 		{
 			InitializeComponent();
-			this.Size = new System.Drawing.Size(531, 531);
+			rbBanco.Checked = true;
+			LiberaQuery(false);
 		}
 
 		private void ComboBanco(DataTable pBancos, bool pHabilita)
@@ -136,6 +138,60 @@ namespace Utilidades
 			return true;
 		}
 
+		private bool ValidacaoQuery()
+		{
+			if (string.IsNullOrWhiteSpace(txtQuery.Text))
+			{
+				MessageBox.Show("Query não informado, Verifique!");
+				txtQuery.Focus();
+				return false;
+			}
+			else if (!txtQuery.Text.ToUpper().StartsWith("SELECT"))
+			{
+				txtQuery.Focus();
+				MessageBox.Show("Query inválida!");
+				return false;
+			}
+			else if (txtQuery.Text.ToUpper().Contains("DELETE"))
+			{
+				txtQuery.Focus();
+				MessageBox.Show("Query inválida!");
+				return false;
+			}
+			else if (txtQuery.Text.ToUpper().Contains("UPDATE"))
+			{
+				txtQuery.Focus();
+				MessageBox.Show("Query inválida!");
+				return false;
+			}
+			else if (txtQuery.Text.ToUpper().Contains("INSERT"))
+			{
+				txtQuery.Focus();
+				MessageBox.Show("Query inválida!");
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace(txtNomeClasse.Text))
+			{
+				MessageBox.Show("Nome da Classe não informada, Verifique!");
+				txtNomeClasse.Focus();
+				return false;
+			}
+
+			return true;
+		}
+
+		private bool ValidacaoTabela()
+		{
+			if (comboTabela.SelectedIndex == -1)
+			{
+				MessageBox.Show("Tabela não selecionada, Verifique!");
+				return false;
+			}
+
+			return true;
+		}
+
 		private void btnGerarModel_Click(object sender, EventArgs e)
 		{
 			try
@@ -143,49 +199,34 @@ namespace Utilidades
 				DB.TpBanco tipoDB;
 				if (Validacao(out tipoDB, true))
 				{
-
 					if (rbBanco.Checked)
 					{
-						if (comboTabela.SelectedIndex == -1)
+						if (ValidacaoTabela())
 						{
-							MessageBox.Show("Tabela não selecionada, Verifique!");
-							return;
-						}
-
-						switch (comboLinguagem.SelectedItem.ToString())
-						{
-							case "C#":
-								Pragma.CSharp.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), pDataAnnotations: cbDataAnnotations.Checked);
-								break;
-							case "Java":
-								Pragma.Java.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario());
-								break;
+							switch (comboLinguagem.SelectedItem.ToString())
+							{
+								case "C#":
+									Pragma.CSharp.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), pDataAnnotations: cbDataAnnotations.Checked);
+									break;
+								case "Java":
+									Pragma.Java.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario());
+									break;
+							}
 						}
 					}
 					else
 					{
-						if (string.IsNullOrWhiteSpace(txtQuery.Text))
+						if (ValidacaoQuery())
 						{
-							MessageBox.Show("Query não informado, Verifique!");
-							txtQuery.Focus();
-							return;
-						}
-
-						if (string.IsNullOrWhiteSpace(txtNomeClasse.Text))
-						{
-							MessageBox.Show("Nome da Classe não informada, Verifique!");
-							txtNomeClasse.Focus();
-							return;
-						}
-
-						switch (comboLinguagem.SelectedItem.ToString())
-						{
-							case "C#":
-								Pragma.CSharp.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), null, tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
-								break;
-							case "Java":
-								Pragma.Java.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), null, tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
-								break;
+							switch (comboLinguagem.SelectedItem.ToString())
+							{
+								case "C#":
+									Pragma.CSharp.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), null, tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
+									break;
+								case "Java":
+									Pragma.Java.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), null, tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
+									break;
+							}
 						}
 					}
 				}
@@ -198,32 +239,39 @@ namespace Utilidades
 
 		private void rbBanco_CheckedChanged(object sender, EventArgs e)
 		{
+			LiberaQuery(false);
+		}
+
+		private void LiberaQuery(bool pLibera)
+		{
+			txtQuery.Enabled = pLibera;
+			txtNomeClasse.Enabled = pLibera;
+			int iTamanho = 0;
+			if (pLibera)
+				iTamanho = 1130;
+			else
+				iTamanho = 540;
+
+			this.Size = new Size(iTamanho, 550);
+			this.CenterToScreen();
+			LimpaControles();
 			if (rbBanco.Checked)
-			{
 				rbQuery.Checked = false;
-				txtQuery.Enabled = false;
-				txtNomeClasse.Enabled = false;
-				txtServidor.Text = "";
-				ComboBanco(null, false);
-				ComboTabela(null, false);
-				plQuery.Visible = false;
-				this.Size = new System.Drawing.Size(531, 531);
-			}
+			if (rbQuery.Checked)
+				rbBanco.Checked = false;
+		}
+
+		private void LimpaControles()
+		{
+			txtServidor.Text = "";
+			ComboBanco(null, false);
+			ComboTabela(null, false);
+			txtQuery.Text = "";
 		}
 
 		private void rbQuery_CheckedChanged(object sender, EventArgs e)
 		{
-			if (rbQuery.Checked)
-			{
-				rbBanco.Checked = false;
-				txtQuery.Enabled = true;
-				txtNomeClasse.Enabled = true;
-				txtServidor.Text = "";
-				ComboBanco(null, false);
-				ComboTabela(null, false);
-				plQuery.Visible = true;
-				this.Size = new System.Drawing.Size(1135, 531);
-			}
+			LiberaQuery(true);
 		}
 
 		private void comboLinguagem_SelectedIndexChanged(object sender, EventArgs e)
@@ -329,19 +377,47 @@ namespace Utilidades
 				{
 					if (rbBanco.Checked)
 					{
-						if (comboTabela.SelectedIndex == -1)
+						if (ValidacaoTabela())
 						{
-							MessageBox.Show("Tabela não selecionada, Verifique!");
-							return;
+							switch (comboLinguagem.SelectedItem.ToString())
+							{
+								case "C#":
+									Pragma.CSharp.GerarRepositoryEntity(txtPacote.Text, comboTabela.Text, txtServidor.Text.Trim(), comboBanco.Text, tipoDB, RetornaUsuario(), cbAspNetCore.Checked, true, false, true);
+									break;
+								case "Java":
+									throw new NotImplementedException();
+							}
 						}
+					}
+					else
+						throw new NotImplementedException();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
 
-						switch (comboLinguagem.SelectedItem.ToString())
+		private void btnGerarDBContext_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				DB.TpBanco tipoDB;
+				if (Validacao(out tipoDB, true))
+				{
+					if (rbBanco.Checked)
+					{
+						if (ValidacaoTabela())
 						{
-							case "C#":
-								Pragma.CSharp.GerarRepository(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), cbAspNetCore.Checked);
-								break;
-							case "Java":
-								throw new NotImplementedException();
+							switch (comboLinguagem.SelectedItem.ToString())
+							{
+								case "C#":
+									Pragma.CSharp.GerarRepositoryEntity(txtPacote.Text, comboTabela.Text, txtServidor.Text.Trim(), comboBanco.Text, tipoDB, RetornaUsuario(), cbAspNetCore.Checked, false, true, false);
+									break;
+								case "Java":
+									throw new NotImplementedException();
+							}
 						}
 					}
 					else

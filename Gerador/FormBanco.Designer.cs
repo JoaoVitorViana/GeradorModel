@@ -49,7 +49,6 @@
 			this.label6 = new System.Windows.Forms.Label();
 			this.comboDB = new System.Windows.Forms.ComboBox();
 			this.comboLinguagem = new System.Windows.Forms.ComboBox();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.label9 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
@@ -58,11 +57,14 @@
 			this.txtServidor = new System.Windows.Forms.TextBox();
 			this.comboTipoLogon = new System.Windows.Forms.ComboBox();
 			this.btnDataBases = new System.Windows.Forms.Button();
-			this.btnGerarRepository = new System.Windows.Forms.Button();
 			this.cbDataAnnotations = new System.Windows.Forms.CheckBox();
 			this.cbAspNetCore = new System.Windows.Forms.CheckBox();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.btnGerarDBContext = new System.Windows.Forms.Button();
+			this.btnGerarRepository = new System.Windows.Forms.Button();
+			this.label12 = new System.Windows.Forms.Label();
 			this.plQuery.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// plQuery
@@ -71,7 +73,7 @@
 			this.plQuery.Controls.Add(this.txtNomeClasse);
 			this.plQuery.Controls.Add(this.txtQuery);
 			this.plQuery.Controls.Add(this.label7);
-			this.plQuery.Location = new System.Drawing.Point(516, 13);
+			this.plQuery.Location = new System.Drawing.Point(521, 12);
 			this.plQuery.Name = "plQuery";
 			this.plQuery.Size = new System.Drawing.Size(595, 472);
 			this.plQuery.TabIndex = 37;
@@ -207,11 +209,11 @@
 			// btnGerarModel
 			// 
 			this.btnGerarModel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnGerarModel.Location = new System.Drawing.Point(12, 373);
+			this.btnGerarModel.Location = new System.Drawing.Point(164, 325);
 			this.btnGerarModel.Name = "btnGerarModel";
 			this.btnGerarModel.Size = new System.Drawing.Size(146, 29);
 			this.btnGerarModel.TabIndex = 29;
-			this.btnGerarModel.Text = "Gerar";
+			this.btnGerarModel.Text = "Gerar Model";
 			this.btnGerarModel.UseVisualStyleBackColor = true;
 			this.btnGerarModel.Click += new System.EventHandler(this.btnGerarModel_Click);
 			// 
@@ -278,16 +280,6 @@
 			this.comboLinguagem.Size = new System.Drawing.Size(364, 24);
 			this.comboLinguagem.TabIndex = 35;
 			this.comboLinguagem.SelectedIndexChanged += new System.EventHandler(this.comboLinguagem_SelectedIndexChanged);
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-			this.pictureBox1.Location = new System.Drawing.Point(2, 325);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(508, 192);
-			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.pictureBox1.TabIndex = 36;
-			this.pictureBox1.TabStop = false;
 			// 
 			// label9
 			// 
@@ -365,24 +357,13 @@
 			// btnDataBases
 			// 
 			this.btnDataBases.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnDataBases.Location = new System.Drawing.Point(12, 338);
+			this.btnDataBases.Location = new System.Drawing.Point(12, 325);
 			this.btnDataBases.Name = "btnDataBases";
 			this.btnDataBases.Size = new System.Drawing.Size(146, 29);
 			this.btnDataBases.TabIndex = 49;
 			this.btnDataBases.Text = "Buscar DataBases";
 			this.btnDataBases.UseVisualStyleBackColor = true;
 			this.btnDataBases.Click += new System.EventHandler(this.btnDataBases_Click);
-			// 
-			// btnGerarRepository
-			// 
-			this.btnGerarRepository.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btnGerarRepository.Location = new System.Drawing.Point(12, 408);
-			this.btnGerarRepository.Name = "btnGerarRepository";
-			this.btnGerarRepository.Size = new System.Drawing.Size(146, 29);
-			this.btnGerarRepository.TabIndex = 50;
-			this.btnGerarRepository.Text = "Gerar Repository";
-			this.btnGerarRepository.UseVisualStyleBackColor = true;
-			this.btnGerarRepository.Click += new System.EventHandler(this.btnGerarRepository_Click);
 			// 
 			// cbDataAnnotations
 			// 
@@ -408,14 +389,57 @@
 			this.cbAspNetCore.Text = "Asp.Net Core";
 			this.cbAspNetCore.UseVisualStyleBackColor = true;
 			// 
+			// panel1
+			// 
+			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel1.Controls.Add(this.btnGerarDBContext);
+			this.panel1.Controls.Add(this.btnGerarRepository);
+			this.panel1.Controls.Add(this.label12);
+			this.panel1.Location = new System.Drawing.Point(12, 364);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(498, 57);
+			this.panel1.TabIndex = 55;
+			// 
+			// btnGerarDBContext
+			// 
+			this.btnGerarDBContext.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnGerarDBContext.Location = new System.Drawing.Point(154, 19);
+			this.btnGerarDBContext.Name = "btnGerarDBContext";
+			this.btnGerarDBContext.Size = new System.Drawing.Size(146, 29);
+			this.btnGerarDBContext.TabIndex = 58;
+			this.btnGerarDBContext.Text = "Gerar DbContext";
+			this.btnGerarDBContext.UseVisualStyleBackColor = true;
+			this.btnGerarDBContext.Click += new System.EventHandler(this.btnGerarDBContext_Click);
+			// 
+			// btnGerarRepository
+			// 
+			this.btnGerarRepository.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btnGerarRepository.Location = new System.Drawing.Point(2, 19);
+			this.btnGerarRepository.Name = "btnGerarRepository";
+			this.btnGerarRepository.Size = new System.Drawing.Size(146, 29);
+			this.btnGerarRepository.TabIndex = 56;
+			this.btnGerarRepository.Text = "Gerar Repository";
+			this.btnGerarRepository.UseVisualStyleBackColor = true;
+			this.btnGerarRepository.Click += new System.EventHandler(this.btnGerarRepository_Click);
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label12.Location = new System.Drawing.Point(-1, 0);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(110, 16);
+			this.label12.TabIndex = 56;
+			this.label12.Text = "Entity Framework";
+			// 
 			// FormBanco
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1121, 525);
+			this.ClientSize = new System.Drawing.Size(1126, 497);
+			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.cbAspNetCore);
 			this.Controls.Add(this.cbDataAnnotations);
-			this.Controls.Add(this.btnGerarRepository);
 			this.Controls.Add(this.btnDataBases);
 			this.Controls.Add(this.comboTipoLogon);
 			this.Controls.Add(this.txtServidor);
@@ -440,7 +464,6 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.comboBanco);
 			this.Controls.Add(this.label4);
-			this.Controls.Add(this.pictureBox1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
@@ -449,7 +472,8 @@
 			this.Text = "Gerador Model";
 			this.plQuery.ResumeLayout(false);
 			this.plQuery.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -472,7 +496,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox comboDB;
         private System.Windows.Forms.ComboBox comboLinguagem;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtQuery;
         private System.Windows.Forms.Label label8;
@@ -486,8 +509,11 @@
         private System.Windows.Forms.Panel plQuery;
         private System.Windows.Forms.ComboBox comboTipoLogon;
         private System.Windows.Forms.Button btnDataBases;
-		private System.Windows.Forms.Button btnGerarRepository;
 		private System.Windows.Forms.CheckBox cbDataAnnotations;
 		private System.Windows.Forms.CheckBox cbAspNetCore;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Button btnGerarRepository;
+		private System.Windows.Forms.Button btnGerarDBContext;
 	}
 }
