@@ -378,7 +378,6 @@
 			this.cbDataAnnotations.TabIndex = 53;
 			this.cbDataAnnotations.Text = "Data annotations";
 			this.cbDataAnnotations.UseVisualStyleBackColor = true;
-			this.cbDataAnnotations.CheckedChanged += new System.EventHandler(this.cbDataAnnotations_CheckedChanged);
 			// 
 			// cbAspNetCore
 			// 

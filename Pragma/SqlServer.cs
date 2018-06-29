@@ -12,9 +12,11 @@ namespace Pragma
 	{
 		public static Tabela GetTabelaInfo(string pTabela, string pServidor, string pBanco, UserDB pUsuario)
 		{
-			Tabela tabela = new Tabela();
-			tabela.Nome = pTabela.Trim();
-			tabela.Banco = pBanco;
+			Tabela tabela = new Tabela
+			{
+				Nome = pTabela.Trim(),
+				Banco = pBanco
+			};
 
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLUMN_DEFAULT, CASE WHEN IS_NULLABLE = 'YES' THEN 0 ELSE 1 END AS NotNull, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH");
@@ -38,7 +40,7 @@ namespace Pragma
 			sb.AppendLine("AND ccu.COLUMN_NAME = t0.COLUMN_NAME");
 			sb.AppendLine(") t FOR XML PATH('')), 1, 1, '') AS VARCHAR(MAX)) AS TabelaChaveEstrangeira");
 			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.COLUMNS t0");
-			sb.AppendLine("WHERE t0.TABLE_NAME =  @Tabela");
+			sb.AppendLine("WHERE t0.TABLE_NAME = @Tabela");
 			sb.AppendLine("ORDER BY ORDINAL_POSITION");
 
 			List<DB.DBParametros> pmts = new List<DB.DBParametros>();
@@ -50,16 +52,18 @@ namespace Pragma
 			List<Campos> campos = new List<Campos>();
 			foreach (DataRow dr in dt.Rows)
 			{
-				Campos campo = new Campos();
-				campo.Nome = dr[3].ToString();
-				campo.NotNull = Convert.ToBoolean(dr[5]);
-				campo.Tipo = new Tipo(dr[6].ToString(), campo.NotNull, (dr[7] != DBNull.Value) ? dr[7].ToString() : null);
-				campo.Chave = Convert.ToBoolean(dr[8]);
-				campo.ChaveEstrangeira = new ChaveEstrangeira()
+				Campos campo = new Campos
 				{
-					Is = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()),
-					Tabelas = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()) ? dr[9].ToString().Split(',') : null
+					Nome = dr[3].ToString(),
+					NotNull = Convert.ToBoolean(dr[5]),
+					Chave = Convert.ToBoolean(dr[8]),
+					ChaveEstrangeira = new ChaveEstrangeira()
+					{
+						Is = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()),
+						Tabelas = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()) ? dr[9].ToString().Split(',') : null
+					}
 				};
+				campo.Tipo = new Tipo(dr[6].ToString(), campo.NotNull, (dr[7] != DBNull.Value) ? dr[7].ToString() : null);
 				campos.Add(campo);
 			}
 
@@ -67,6 +71,20 @@ namespace Pragma
 				tabela.Schema = dt.Rows[0][1].ToString();
 			tabela.ExisteChave = campos.Where(i => i.Chave == true).Any();
 			tabela.Campos = campos;
+
+			//Chave Estrangeira
+			sb = new StringBuilder();
+			sb.AppendLine("SELECT ccu.table_name AS SourceTable");
+			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu");
+			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
+			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
+			sb.AppendLine("WHERE 1=1");
+			sb.AppendLine("AND kcu.TABLE_NAME = @Tabela");
+			dt = dbConexao.ExecuteDataTable(sb.ToString(), pmts);
+			List<string> ChaveEstrangeira = new List<string>();
+			foreach (DataRow dr in dt.Rows)
+				ChaveEstrangeira.Add(dr[0].ToString());
+			tabela.TabelasChaveEstrangeira = ChaveEstrangeira;
 			return tabela;
 		}
 

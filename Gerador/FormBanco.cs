@@ -284,24 +284,24 @@ namespace Utilidades
 				{
 					case "C#":
 						lbPacote.Text = "Namespace:";
-						txtPacote.Text = "";
 						cbDataAnnotations.Checked = true;
 						cbDataAnnotations.Enabled = true;
 						cbAspNetCore.Enabled = true;
-						cbAspNetCore.Checked = false;
+						cbForeignKey.Enabled = true;
 						break;
 					case "Java":
 						lbPacote.Text = "Package:";
-						txtPacote.Text = "";
-						cbDataAnnotations.Checked = false;
 						cbDataAnnotations.Enabled = false;
+						cbDataAnnotations.Checked = false;
 						cbAspNetCore.Enabled = false;
-						cbAspNetCore.Checked = false;
+						cbForeignKey.Enabled = false;
 						break;
 				}
 			}
-			else
-				txtPacote.Text = "";
+
+			cbAspNetCore.Checked = false;
+			cbForeignKey.Checked = false;
+			txtPacote.Text = "";
 		}
 
 		private void comboDB_SelectedIndexChanged(object sender, EventArgs e)
@@ -428,17 +428,6 @@ namespace Utilidades
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
-			}
-		}
-
-		private void cbDataAnnotations_CheckedChanged(object sender, EventArgs e)
-		{
-			if (cbDataAnnotations.Checked)
-				cbForeignKey.Enabled = true;
-			else
-			{
-				cbForeignKey.Enabled = false;
-				cbForeignKey.Checked = false;
 			}
 		}
 	}

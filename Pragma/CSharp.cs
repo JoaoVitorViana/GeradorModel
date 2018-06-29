@@ -28,7 +28,11 @@ namespace Pragma
 				sb.AppendLine("using System.ComponentModel.DataAnnotations;");
 				sb.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
 			}
-			sb.AppendLine("");
+			if (pChaveEstrangeira)
+			{
+				sb.AppendLine("using System.Collections.Generic;");
+			}
+			sb.AppendLine();
 			sb.AppendLine("namespace " + pNamespace);
 			sb.AppendLine("{");
 			if (pDataAnnotations)
@@ -37,6 +41,24 @@ namespace Pragma
 			sb.AppendLine("    {");
 
 			StringBuilder sbForeignKey = null;
+			if (pChaveEstrangeira)
+			{
+				if (tabela.TabelasChaveEstrangeira?.Count > 0)
+				{
+					sb.AppendLine($"        public {tabela.Nome}()");
+					sb.AppendLine("        {");
+					tabela.TabelasChaveEstrangeira.ForEach((chave) =>
+					{
+						if (sbForeignKey == null)
+							sbForeignKey = new StringBuilder();
+
+						sb.AppendLine($"            {chave} = new HashSet<{chave}>();");
+						sbForeignKey.AppendLine($"        public virtual ICollection<{chave}> {chave} {GetSet}");
+					});
+					sb.AppendLine("        }");
+				}
+			}
+
 			tabela.Campos?.ForEach((campo) =>
 			{
 				if (pDataAnnotations)
@@ -45,23 +67,24 @@ namespace Pragma
 						sb.AppendLine("        [Key]");
 					else if (campo.NotNull)
 						sb.AppendLine("        [Required(ErrorMessage = \"*Campo obrigatório.\")]");
-					if (pChaveEstrangeira && campo.ChaveEstrangeira != null && campo.ChaveEstrangeira.Is)
-					{
-						campo.ChaveEstrangeira.Tabelas?.ToList().ForEach((estrageira) =>
-						{
-							if (sbForeignKey == null)
-								sbForeignKey = new StringBuilder();
-
-							sbForeignKey.AppendLine($"        public virtual {estrageira} {estrageira} {GetSet}");
-							sb.AppendLine($"        [ForeignKey(\"{estrageira}\")]");
-						});
-					}
 					if (campo.Tipo.Banco.ToLower().Equals("date"))
 						sb.AppendLine("        [DisplayFormat(DataFormatString = \"{0:dd/MM/yyyy}\", ApplyFormatInEditMode = true)]");
 					if (campo.Tipo.Banco.ToLower().Equals("datetime"))
 						sb.AppendLine("        [DisplayFormat(DataFormatString = \"{0:d}\", ApplyFormatInEditMode = true)]");
 					else if (campo.Tipo.CSharp.ToLower().Equals("string") && campo.Tipo.Tamanho > 1 && campo.Tipo.Tamanho < 4000)
 						sb.AppendLine($"        [StringLength({campo.Tipo.Tamanho}, ErrorMessage = \"Você atingiu o limite máximo de {campo.Tipo.Tamanho} caracteres permitidos.\")]");
+				}
+				if (pChaveEstrangeira && campo.ChaveEstrangeira != null && campo.ChaveEstrangeira.Is)
+				{
+					campo.ChaveEstrangeira.Tabelas?.ToList().ForEach((estrageira) =>
+					{
+						if (sbForeignKey == null)
+							sbForeignKey = new StringBuilder();
+
+						sbForeignKey.AppendLine($"        public virtual {estrageira} {estrageira} {GetSet}");
+						if (pDataAnnotations)
+							sb.AppendLine($"        [ForeignKey(\"{estrageira}\")]");
+					});
 				}
 				sb.AppendLine($"        public {campo.Tipo.CSharp} {campo.Nome} {GetSet}");
 			});
