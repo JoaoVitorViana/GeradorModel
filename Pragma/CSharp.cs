@@ -16,7 +16,8 @@ namespace Pragma
 			Arquivos.Gerar(sb.ToString(), "POST");
 		}
 
-		public static void GerarModel(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, Model.UserDB pUsuario, bool pQuery = false, string pComando = null, bool pDataAnnotations = false)
+		public static void GerarModel(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, Model.UserDB pUsuario
+									, bool pQuery = false, string pComando = null, bool pDataAnnotations = false, bool pChaveEstrangeira = false)
 		{
 			Tabela tabela = Util.GetTabela(pTpBanco, pTabela, pServidor, pBanco, pUsuario, pQuery, pComando);
 
@@ -35,7 +36,8 @@ namespace Pragma
 			sb.AppendLine($"    public partial class {tabela.Nome}");
 			sb.AppendLine("    {");
 
-			tabela.Campos.ForEach((campo) =>
+			StringBuilder sbForeignKey = null;
+			tabela.Campos?.ForEach((campo) =>
 			{
 				if (pDataAnnotations)
 				{
@@ -43,6 +45,17 @@ namespace Pragma
 						sb.AppendLine("        [Key]");
 					else if (campo.NotNull)
 						sb.AppendLine("        [Required(ErrorMessage = \"*Campo obrigatório.\")]");
+					if (pChaveEstrangeira && campo.ChaveEstrangeira != null && campo.ChaveEstrangeira.Is)
+					{
+						campo.ChaveEstrangeira.Tabelas?.ToList().ForEach((estrageira) =>
+						{
+							if (sbForeignKey == null)
+								sbForeignKey = new StringBuilder();
+
+							sbForeignKey.AppendLine($"        public virtual {estrageira} {estrageira} {GetSet}");
+							sb.AppendLine($"        [ForeignKey(\"{estrageira}\")]");
+						});
+					}
 					if (campo.Tipo.Banco.ToLower().Equals("date"))
 						sb.AppendLine("        [DisplayFormat(DataFormatString = \"{0:dd/MM/yyyy}\", ApplyFormatInEditMode = true)]");
 					if (campo.Tipo.Banco.ToLower().Equals("datetime"))
@@ -52,6 +65,9 @@ namespace Pragma
 				}
 				sb.AppendLine($"        public {campo.Tipo.CSharp} {campo.Nome} {GetSet}");
 			});
+
+			if (sbForeignKey != null)
+				sb.Append(sbForeignKey);
 
 			sb.AppendLine("    }");
 			sb.Append("}");

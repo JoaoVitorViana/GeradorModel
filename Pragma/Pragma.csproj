@@ -52,6 +52,7 @@
     <Compile Include="Chip.cs" />
     <Compile Include="CSharp.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="ChaveEstrangeira.cs" />
     <Compile Include="IO.cs" />
     <Compile Include="Java.cs" />
     <Compile Include="Mobile.cs" />

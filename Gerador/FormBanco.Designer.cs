@@ -63,6 +63,7 @@
 			this.btnGerarDBContext = new System.Windows.Forms.Button();
 			this.btnGerarRepository = new System.Windows.Forms.Button();
 			this.label12 = new System.Windows.Forms.Label();
+			this.cbForeignKey = new System.Windows.Forms.CheckBox();
 			this.plQuery.SuspendLayout();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
@@ -377,12 +378,13 @@
 			this.cbDataAnnotations.TabIndex = 53;
 			this.cbDataAnnotations.Text = "Data annotations";
 			this.cbDataAnnotations.UseVisualStyleBackColor = true;
+			this.cbDataAnnotations.CheckedChanged += new System.EventHandler(this.cbDataAnnotations_CheckedChanged);
 			// 
 			// cbAspNetCore
 			// 
 			this.cbAspNetCore.AutoSize = true;
 			this.cbAspNetCore.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cbAspNetCore.Location = new System.Drawing.Point(146, 299);
+			this.cbAspNetCore.Location = new System.Drawing.Point(248, 297);
 			this.cbAspNetCore.Name = "cbAspNetCore";
 			this.cbAspNetCore.Size = new System.Drawing.Size(107, 20);
 			this.cbAspNetCore.TabIndex = 54;
@@ -432,11 +434,23 @@
 			this.label12.TabIndex = 56;
 			this.label12.Text = "Entity Framework";
 			// 
+			// cbForeignKey
+			// 
+			this.cbForeignKey.AutoSize = true;
+			this.cbForeignKey.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.cbForeignKey.Location = new System.Drawing.Point(146, 297);
+			this.cbForeignKey.Name = "cbForeignKey";
+			this.cbForeignKey.Size = new System.Drawing.Size(96, 20);
+			this.cbForeignKey.TabIndex = 56;
+			this.cbForeignKey.Text = "ForeignKey";
+			this.cbForeignKey.UseVisualStyleBackColor = true;
+			// 
 			// FormBanco
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1126, 497);
+			this.Controls.Add(this.cbForeignKey);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.cbAspNetCore);
 			this.Controls.Add(this.cbDataAnnotations);
@@ -515,5 +529,6 @@
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.Button btnGerarRepository;
 		private System.Windows.Forms.Button btnGerarDBContext;
+		private System.Windows.Forms.CheckBox cbForeignKey;
 	}
 }

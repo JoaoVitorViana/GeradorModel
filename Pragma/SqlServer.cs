@@ -10,25 +10,6 @@ namespace Pragma
 {
 	public class SqlServer
 	{
-		public static bool IsChave(string pTabela, string pServidor, string pBanco, string pColuna, UserDB pUsuario)
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("SELECT KU.table_name AS TABLENAME, column_name AS PRIMARYKEYCOLUMN");
-			sb.AppendLine($"FROM {pBanco}.INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS TC");
-			sb.AppendLine($"JOIN {pBanco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KU ON (TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME)");
-			sb.AppendLine("WHERE KU.table_name = @Tabela");
-			sb.AppendLine("AND KU.COLUMN_NAME = @Coluna");
-			sb.AppendLine("ORDER BY KU.TABLE_NAME, KU.ORDINAL_POSITION");
-
-			DB.SqlServer dbConexao = RetornaDB(pUsuario, pServidor);
-			List<DB.DBParametros> pmts = new List<DB.DBParametros>();
-			pmts.Add(new DB.DBParametros { Name = "Tabela", Value = pTabela });
-			pmts.Add(new DB.DBParametros { Name = "Coluna", Value = pColuna });
-
-			DataTable dtExiste = dbConexao.ExecuteDataTable(sb.ToString(), pmts);
-			return dtExiste.Rows.Count > 0;
-		}
-
 		public static Tabela GetTabelaInfo(string pTabela, string pServidor, string pBanco, UserDB pUsuario)
 		{
 			Tabela tabela = new Tabela();
@@ -36,9 +17,28 @@ namespace Pragma
 			tabela.Banco = pBanco;
 
 			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLUMN_DEFAULT, CASE WHEN IS_NULLABLE = 'YES' THEN 0 ELSE 1 END NOTNULL, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH");
-			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.COLUMNS");
-			sb.AppendLine("WHERE TABLE_NAME = @Tabela");
+			sb.AppendLine("SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLUMN_DEFAULT, CASE WHEN IS_NULLABLE = 'YES' THEN 0 ELSE 1 END AS NotNull, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH");
+			sb.AppendLine(",(SELECT CASE WHEN COUNT(1) <= 0 THEN 0 ELSE 1 END");
+			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS TC");
+			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KU ON (TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME)");
+			sb.AppendLine("WHERE KU.table_name = t0.TABLE_NAME");
+			sb.AppendLine("AND KU.COLUMN_NAME = t0.COLUMN_NAME) AS IsChave");
+			sb.AppendLine(",CAST(STUFF((SELECT  ',' + t.TargetTable");
+			sb.AppendLine("FROM (");
+			sb.AppendLine("SELECT ccu.table_name AS SourceTable");
+			sb.AppendLine("    ,ccu.constraint_name AS SourceConstraint");
+			sb.AppendLine("    ,ccu.column_name AS SourceColumn");
+			sb.AppendLine("    ,kcu.table_name AS TargetTable");
+			sb.AppendLine("    ,kcu.column_name AS TargetColumn");
+			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu");
+			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
+			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
+			sb.AppendLine("WHERE ccu.TABLE_NAME = t0.TABLE_NAME");
+			sb.AppendLine("AND ccu.TABLE_SCHEMA = t0.TABLE_SCHEMA");
+			sb.AppendLine("AND ccu.COLUMN_NAME = t0.COLUMN_NAME");
+			sb.AppendLine(") t FOR XML PATH('')), 1, 1, '') AS VARCHAR(MAX)) AS TabelaChaveEstrangeira");
+			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.COLUMNS t0");
+			sb.AppendLine("WHERE t0.TABLE_NAME =  @Tabela");
 			sb.AppendLine("ORDER BY ORDINAL_POSITION");
 
 			List<DB.DBParametros> pmts = new List<DB.DBParametros>();
@@ -54,7 +54,12 @@ namespace Pragma
 				campo.Nome = dr[3].ToString();
 				campo.NotNull = Convert.ToBoolean(dr[5]);
 				campo.Tipo = new Tipo(dr[6].ToString(), campo.NotNull, (dr[7] != DBNull.Value) ? dr[7].ToString() : null);
-				campo.Chave = IsChave(pTabela, pServidor, pBanco, dr[3].ToString(), pUsuario);
+				campo.Chave = Convert.ToBoolean(dr[8]);
+				campo.ChaveEstrangeira = new ChaveEstrangeira()
+				{
+					Is = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()),
+					Tabelas = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()) ? dr[9].ToString().Split(',') : null
+				};
 				campos.Add(campo);
 			}
 

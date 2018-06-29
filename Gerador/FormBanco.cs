@@ -206,7 +206,8 @@ namespace Utilidades
 							switch (comboLinguagem.SelectedItem.ToString())
 							{
 								case "C#":
-									Pragma.CSharp.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), pDataAnnotations: cbDataAnnotations.Checked);
+									Pragma.CSharp.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString()
+										, tipoDB, RetornaUsuario(), pDataAnnotations: cbDataAnnotations.Checked, pChaveEstrangeira: cbForeignKey.Checked);
 									break;
 								case "Java":
 									Pragma.Java.GerarModel(txtPacote.Text, comboTabela.SelectedValue.ToString(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario());
@@ -427,6 +428,17 @@ namespace Utilidades
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
+			}
+		}
+
+		private void cbDataAnnotations_CheckedChanged(object sender, EventArgs e)
+		{
+			if (cbDataAnnotations.Checked)
+				cbForeignKey.Enabled = true;
+			else
+			{
+				cbForeignKey.Enabled = false;
+				cbForeignKey.Checked = false;
 			}
 		}
 	}

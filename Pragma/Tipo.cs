@@ -37,6 +37,7 @@ namespace Pragma
 					break;
 				case "money":
 				case "numeric":
+				case "decimal":
 				case "smallmoney":
 					this.CSharp = "decimal" + (pNotNull ? "" : "?");
 					this.Java = "double";
