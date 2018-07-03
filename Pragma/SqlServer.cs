@@ -21,8 +21,8 @@ namespace Pragma
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLUMN_DEFAULT, CASE WHEN IS_NULLABLE = 'YES' THEN 0 ELSE 1 END AS NotNull, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH");
 			sb.AppendLine(",(SELECT CASE WHEN COUNT(1) <= 0 THEN 0 ELSE 1 END");
-			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS TC");
-			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KU ON (TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME)");
+			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[TABLE_CONSTRAINTS] AS TC");
+			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[KEY_COLUMN_USAGE] AS KU ON (TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME)");
 			sb.AppendLine("WHERE KU.table_name = t0.TABLE_NAME");
 			sb.AppendLine("AND KU.COLUMN_NAME = t0.COLUMN_NAME) AS IsChave");
 			sb.AppendLine(",CAST(STUFF((SELECT  ',' + t.TargetTable");
@@ -32,14 +32,14 @@ namespace Pragma
 			sb.AppendLine("    ,ccu.column_name AS SourceColumn");
 			sb.AppendLine("    ,kcu.table_name AS TargetTable");
 			sb.AppendLine("    ,kcu.column_name AS TargetColumn");
-			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu");
-			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
-			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
+			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] ccu");
+			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[REFERENTIAL_CONSTRAINTS] rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
+			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[KEY_COLUMN_USAGE] kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
 			sb.AppendLine("WHERE ccu.TABLE_NAME = t0.TABLE_NAME");
 			sb.AppendLine("AND ccu.TABLE_SCHEMA = t0.TABLE_SCHEMA");
 			sb.AppendLine("AND ccu.COLUMN_NAME = t0.COLUMN_NAME");
 			sb.AppendLine(") t FOR XML PATH('')), 1, 1, '') AS VARCHAR(MAX)) AS TabelaChaveEstrangeira");
-			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.COLUMNS t0");
+			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[COLUMNS] t0");
 			sb.AppendLine("WHERE t0.TABLE_NAME = @Tabela");
 			if (!string.IsNullOrWhiteSpace(pSchema))
 				sb.AppendLine("AND t0.TABLE_SCHEMA = @Schema");
@@ -79,9 +79,9 @@ namespace Pragma
 			//Chave Estrangeira
 			sb = new StringBuilder();
 			sb.AppendLine("SELECT ccu.table_name AS SourceTable");
-			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE ccu");
-			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
-			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
+			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] ccu");
+			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[REFERENTIAL_CONSTRAINTS] rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
+			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[KEY_COLUMN_USAGE] kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
 			sb.AppendLine("WHERE 1=1");
 			sb.AppendLine("AND kcu.TABLE_NAME = @Tabela");
 			if (!string.IsNullOrWhiteSpace(pSchema))
@@ -102,7 +102,7 @@ namespace Pragma
 
 		public static DataTable GetBancos(string pServidor, UserDB pUsuario)
 		{
-			string query = "SELECT name AS Name FROM master.dbo.sysdatabases ORDER BY name";
+			string query = "SELECT name AS Name FROM [master].[dbo].[sysdatabases] ORDER BY name";
 			DB.SqlServer dbConexao = RetornaDB(pUsuario, pServidor);
 			return dbConexao.ExecuteDataTable(query);
 		}
@@ -119,7 +119,7 @@ namespace Pragma
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("SELECT TABLE_SCHEMA + '.' + TABLE_NAME AS Name");
-			sb.AppendLine($"FROM {pBanco}.INFORMATION_SCHEMA.TABLES");
+			sb.AppendLine($"FROM [{pBanco}].[INFORMATION_SCHEMA].[TABLES]");
 			sb.AppendLine("ORDER BY 1");
 			DB.SqlServer dbConexao = RetornaDB(pUsuario, pServidor);
 			return dbConexao.ExecuteDataTable(sb.ToString());
