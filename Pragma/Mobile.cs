@@ -105,6 +105,7 @@ namespace Pragma
             Arquivos.Deletar();
             Arquivos.Gerar(sb.ToString(), nome_classe);
         }
+
         public static Tabela GetTabelaInfo(string pTabela, string pBanco)
         {
             Tabela tabela = new Tabela();
@@ -144,6 +145,7 @@ namespace Pragma
             tabela.Campos = campos;
             return tabela;
         }
+
         public static void GerarLayout(string pNome, TipoLayout pTipoLayout)
         {
             StringBuilder sb = new StringBuilder();
@@ -174,6 +176,7 @@ namespace Pragma
 
             Arquivos.Gerar(sb.ToString(), pNome);
         }
+
         public static void GerarRecyclerView(string pProjeto, string pClasse, string pClasseObjeto, string pPkgObjeto)
         {
             string nomeClasse = pClasse;
@@ -247,6 +250,7 @@ namespace Pragma
             Arquivos.Gerar(sb.ToString(), nomeClasse);
             GerarLayout(nomeLayout, TipoLayout.LinearVertical);
         }
+
         public static void GerarSetImage()
         {
             StringBuilder sb = new StringBuilder();
@@ -261,6 +265,7 @@ namespace Pragma
             Arquivos.Deletar();
             Arquivos.Gerar(sb.ToString(), "Exemplo Set");
         }
+
         /// <summary>
         /// Retorna Tabelas
         /// </summary>
@@ -278,6 +283,7 @@ namespace Pragma
 
             return dbSql.ExecuteDataTable(sb.ToString());
         }
+
         public static void GerarExpandableList(string pProjeto, string pClasse, string pClasseObjeto, string pPkgObjeto, string pClasseObjetoSecundario)
         {
             string nomeClasse = pClasse;
@@ -384,6 +390,7 @@ namespace Pragma
             Arquivos.Deletar();
             Arquivos.Gerar(sb.ToString(), nomeClasse);
         }
+
         public static void GerarArrayAdapter(string pProjeto, string pClasse, string pClasseObjeto, string pPkgObjeto)
         {
             string nomeClasse = pClasse;
@@ -435,6 +442,7 @@ namespace Pragma
             Arquivos.Deletar();
             Arquivos.Gerar(sb.ToString(), nomeClasse);
         }
+
         public static void GerarClassDB(string pProjeto)
         {
             StringBuilder sbMult = new StringBuilder();
@@ -654,6 +662,7 @@ namespace Pragma
             Arquivos.Gerar(sbDB.ToString(), "SimpleDbHelper");
             Arquivos.Gerar(sbMyMulti.ToString(), "MyMultiThreadSQLiteOpenHelper");
         }
+
         public static void GerarConexao()
         {
             StringBuilder sb = new StringBuilder();
@@ -795,6 +804,7 @@ namespace Pragma
             Arquivos.Deletar();
             Arquivos.Gerar(sb.ToString(), "Conexao Android");
         }
+
         public static void GerarThread()
         {
             StringBuilder sb = new StringBuilder();
@@ -812,6 +822,7 @@ namespace Pragma
             Arquivos.Deletar();
             Arquivos.Gerar(sb.ToString(), "Thread Android");
         }
+
         public static void GerarFireBase()
         {
             StringBuilder sb = new StringBuilder();
@@ -842,6 +853,7 @@ namespace Pragma
             Arquivos.Deletar();
             Arquivos.Gerar(sb.ToString(), "FireBase Android");
         }
+
         public static void GerarDialog(string pProjeto, string pClasse)
         {
             string nomeClasse = pClasse;

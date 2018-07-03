@@ -7,6 +7,7 @@ namespace Pragma
 	public class CSharp
 	{
 		public static string GetSet = "{ get; set; }";
+
 		public static void GerarRestPost()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -111,6 +112,7 @@ namespace Pragma
 
 			Arquivos.Deletar();
 			StringBuilder sb;
+			
 			#region interface
 			if (pGerarInterface)
 			{

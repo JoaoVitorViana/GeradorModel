@@ -9,6 +9,7 @@ namespace Pragma
 {
     public class Email
     {
+
         public enum TipoEmail
         {
             Alerta = 1,
@@ -18,6 +19,7 @@ namespace Pragma
             Chamados = 5,
             Boleto = 6
         }
+
         public class DadosEmail
         {
             public string Titulo { get; set; }
@@ -33,6 +35,7 @@ namespace Pragma
                 this.EnviaLogo = true;
             }
         }
+
         public Retorno EnviaEmail(TipoEmail Tipo, string Servico, DadosEmail DadosEmail)
         {
             Retorno ret = new Retorno();
@@ -132,6 +135,7 @@ namespace Pragma
             }
             return ret;
         }
+
         class ConfEmail
         {
             public string Host { get; }

@@ -8,6 +8,7 @@ namespace Pragma
         public string Identificador { get; set; }
         public string Campos { get; set; }
         public List<ParametroUtil> pParametros { get; set; }
+
         public Parametro(List<Campos> pCampos)
         {
             string Parametros = string.Empty;

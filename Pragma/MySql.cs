@@ -41,6 +41,7 @@ namespace Pragma
             tabela.Campos = campos;
             return tabela;
         }
+
         public static DataTable GetBancos(string pServidor, UserDB pUsuario)
         {
             DB.MySql dbConexao = new DB.MySql(pServidor, pUsuario.Usuario, pUsuario.Senha);
@@ -48,6 +49,7 @@ namespace Pragma
             dt.Columns[0].ColumnName = "Name";
             return dt;
         }
+
         public static DataTable GetTabelas(string pServidor, string pBanco, UserDB pUsuario)
         {
             DB.MySql dbConexao = new DB.MySql(pServidor, pUsuario.Usuario, pUsuario.Senha);
