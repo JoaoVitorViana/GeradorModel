@@ -10,7 +10,7 @@ namespace Pragma
 {
 	public class SqlServer
 	{
-		public static Tabela GetTabelaInfo(string pTabela, string pServidor, string pBanco, UserDB pUsuario)
+		public static Tabela GetTabelaInfo(string pTabela, string pServidor, string pBanco, UserDB pUsuario, string pSchema)
 		{
 			Tabela tabela = new Tabela
 			{
@@ -41,10 +41,14 @@ namespace Pragma
 			sb.AppendLine(") t FOR XML PATH('')), 1, 1, '') AS VARCHAR(MAX)) AS TabelaChaveEstrangeira");
 			sb.AppendLine($"FROM {tabela.Banco}.INFORMATION_SCHEMA.COLUMNS t0");
 			sb.AppendLine("WHERE t0.TABLE_NAME = @Tabela");
+			if (!string.IsNullOrWhiteSpace(pSchema))
+				sb.AppendLine("AND t0.TABLE_SCHEMA = @Schema");
 			sb.AppendLine("ORDER BY ORDINAL_POSITION");
 
 			List<DB.DBParametros> pmts = new List<DB.DBParametros>();
 			pmts.Add(new DB.DBParametros { Name = "Tabela", Value = tabela.Nome });
+			if (!string.IsNullOrWhiteSpace(pSchema))
+				pmts.Add(new DB.DBParametros { Name = "Schema", Value = pSchema });
 
 			DB.SqlServer dbConexao = RetornaDB(pUsuario, pServidor);
 			DataTable dt = dbConexao.ExecuteDataTable(sb.ToString(), pmts);
@@ -80,6 +84,14 @@ namespace Pragma
 			sb.AppendLine($"JOIN {tabela.Banco}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
 			sb.AppendLine("WHERE 1=1");
 			sb.AppendLine("AND kcu.TABLE_NAME = @Tabela");
+			if (!string.IsNullOrWhiteSpace(pSchema))
+				sb.AppendLine("AND kcu.TABLE_SCHEMA = @Schema");
+			else if (!string.IsNullOrWhiteSpace(tabela.Schema))
+			{
+				sb.AppendLine("AND kcu.TABLE_SCHEMA = @Schema");
+				pmts.Add(new DB.DBParametros { Name = "Schema", Value = tabela.Schema });
+			}
+
 			dt = dbConexao.ExecuteDataTable(sb.ToString(), pmts);
 			List<string> ChaveEstrangeira = new List<string>();
 			foreach (DataRow dr in dt.Rows)
@@ -106,9 +118,9 @@ namespace Pragma
 		public static DataTable GetTabelas(string pServidor, string pBanco, UserDB pUsuario)
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("SELECT TABLE_NAME AS Name");
+			sb.AppendLine("SELECT TABLE_SCHEMA + '.' + TABLE_NAME AS Name");
 			sb.AppendLine($"FROM {pBanco}.INFORMATION_SCHEMA.TABLES");
-			sb.AppendLine("ORDER BY TABLE_NAME");
+			sb.AppendLine("ORDER BY 1");
 			DB.SqlServer dbConexao = RetornaDB(pUsuario, pServidor);
 			return dbConexao.ExecuteDataTable(sb.ToString());
 		}

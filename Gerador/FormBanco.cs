@@ -264,10 +264,12 @@ namespace Utilidades
 
 		private void LimpaControles()
 		{
-			txtServidor.Text = "";
 			ComboBanco(null, false);
 			ComboTabela(null, false);
 			txtQuery.Text = "";
+			cbAspNetCore.Checked = false;
+			cbForeignKey.Checked = false;
+			txtPacote.Text = "";
 		}
 
 		private void rbQuery_CheckedChanged(object sender, EventArgs e)
@@ -298,10 +300,7 @@ namespace Utilidades
 						break;
 				}
 			}
-
-			cbAspNetCore.Checked = false;
-			cbForeignKey.Checked = false;
-			txtPacote.Text = "";
+			LiberaQuery(!rbBanco.Checked);
 		}
 
 		private void comboDB_SelectedIndexChanged(object sender, EventArgs e)
@@ -326,6 +325,7 @@ namespace Utilidades
 				comboTipoLogon.SelectedIndex = -1;
 				comboTipoLogon.Enabled = false;
 			}
+			LiberaQuery(!rbBanco.Checked);
 		}
 
 		private void comboTipoLogon_SelectedIndexChanged(object sender, EventArgs e)
@@ -346,6 +346,7 @@ namespace Utilidades
 			txtSenha.Enabled = habilita;
 			txtUsuario.Text = "";
 			txtSenha.Text = "";
+			LiberaQuery(!rbBanco.Checked);
 		}
 
 		private void btnDataBases_Click(object sender, EventArgs e)

@@ -103,17 +103,25 @@ namespace Pragma
 		public static Tabela GetTabela(TpBanco pTpBanco, string pTabela, string pServidor, string pBanco, UserDB pUsuario, bool pQuery, string pComando)
 		{
 			Tabela tabela = null;
-
+			var schemaTabela = pTabela.Split('.');
+			string schema = string.Empty;
+			string tabelaNome = pTabela;
+			if (schemaTabela != null && schemaTabela.Length > 1)
+			{
+				schema = schemaTabela[0];
+				tabelaNome = schemaTabela[1];
+			}
+			
 			if (pQuery)
-				tabela = GetQueryInfo(pComando, pServidor, pTabela, pTpBanco, pUsuario);
+				tabela = GetQueryInfo(pComando, pServidor, tabelaNome, pTpBanco, pUsuario);
 			else
 				switch (pTpBanco)
 				{
 					case TpBanco.SqlServer:
-						tabela = SqlServer.GetTabelaInfo(pTabela, pServidor, pBanco, pUsuario);
+						tabela = SqlServer.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario, schema);
 						break;
 					case TpBanco.MySql:
-						tabela = MySql.GetTabelaInfo(pTabela, pServidor, pBanco, pUsuario);
+						tabela = MySql.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario);
 						break;
 					default:
 						throw new NotImplementedException();
