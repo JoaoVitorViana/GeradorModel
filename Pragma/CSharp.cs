@@ -112,7 +112,7 @@ namespace Pragma
 
 			Arquivos.Deletar();
 			StringBuilder sb;
-			
+
 			#region interface
 			if (pGerarInterface)
 			{
@@ -154,57 +154,105 @@ namespace Pragma
 			{
 				sb = new StringBuilder();
 				if (pAspNetCore)
-				{
 					sb.AppendLine("using Microsoft.EntityFrameworkCore;");
-					sb.AppendLine("");
-				}
+				else
+					sb.AppendLine("using System.Data.Entity;");
+				sb.AppendLine("");
 				sb.AppendLine($"namespace {pNamespace}");
 				sb.AppendLine("{");
 				sb.AppendLine($"	public partial class {classeDB} : DbContext");
 				sb.AppendLine("	{");
-				sb.AppendLine($"		public {classeDB}()");
-				sb.AppendLine("		{");
-				sb.AppendLine("");
-				sb.AppendLine("		}");
-				sb.AppendLine("");
-				sb.AppendLine($"		public {classeDB}(DbContextOptions<{classeDB}> options) : base(options)");
-				sb.AppendLine("		{");
-				sb.AppendLine("");
-				sb.AppendLine("		}");
+				if (pAspNetCore)
+				{
+					sb.AppendLine($"		public {classeDB}()");
+					sb.AppendLine("		{");
+					sb.AppendLine("");
+					sb.AppendLine("		}");
+					sb.AppendLine("");
+					sb.AppendLine($"		public {classeDB}(DbContextOptions<{classeDB}> options) : base(options)");
+					sb.AppendLine("		{");
+					sb.AppendLine("");
+					sb.AppendLine("		}");
+				}
+				else
+				{
+					sb.AppendLine($"		public {classeDB}() : base(\"name={classeDB}\")");
+					sb.AppendLine("		{");
+					sb.AppendLine("");
+					sb.AppendLine("		}");
+				}
 				sb.AppendLine("");
 				sb.AppendLine($"		public virtual DbSet<{tabela.Nome}> {tabela.Nome} {GetSet}");
 				sb.AppendLine("		");
-				sb.AppendLine($"		protected override void OnModelCreating(ModelBuilder {model})");
+				sb.AppendLine($"		protected override void OnModelCreating({((pAspNetCore) ? "ModelBuilder" : "DbModelBuilder")} {model})");
 				sb.AppendLine("		{");
-				sb.AppendLine($"			{model}.Entity<{tabela.Nome}>(entity =>");
-				sb.AppendLine("			{");
-				for (int i = 0; i < tabela.Campos.Count; i++)
+				if (pAspNetCore)
 				{
-					if (i > 0) sb.AppendLine();
-					if (tabela.Campos[i].Chave)
+					sb.AppendLine($"			{model}.Entity<{tabela.Nome}>(entity =>");
+					sb.AppendLine("			{");
+					for (int i = 0; i < tabela.Campos.Count; i++)
 					{
-						sb.AppendLine($"				entity.HasKey(e => e.{tabela.Campos[i].Nome});");
-						sb.AppendLine();
+						if (i > 0) sb.AppendLine();
+						if (tabela.Campos[i].Chave)
+						{
+							sb.AppendLine($"				entity.HasKey(e => e.{tabela.Campos[i].Nome});");
+							sb.AppendLine();
+						}
+						sb.AppendLine($"				entity.Property(e => e.{tabela.Campos[i].Nome})");
+						if (tabela.Campos[i].NotNull && !tabela.Campos[i].Chave)
+							sb.AppendLine("					.IsRequired()");
+						if (tabela.Campos[i].Tipo.CSharp.ToLower().Equals("string") && tabela.Campos[i].Tipo.Tamanho > 1 && tabela.Campos[i].Tipo.Tamanho < 4000)
+							sb.AppendLine($"					.HasMaxLength({tabela.Campos[i].Tipo.Tamanho})");
+						if (tabela.Campos[i].Tipo.Banco.ToLower().Contains("date"))
+							sb.AppendLine($"					.HasColumnType({tabela.Campos[i].Tipo.Banco})");
+						sb.AppendLine($"					.HasColumnName(\"{tabela.Campos[i].Nome}\");");
 					}
-					sb.AppendLine($"				entity.Property(e => e.{tabela.Campos[i].Nome})");
-					if (tabela.Campos[i].NotNull && !tabela.Campos[i].Chave)
-						sb.AppendLine("					.IsRequired()");
-					if (tabela.Campos[i].Tipo.CSharp.ToLower().Equals("string") && tabela.Campos[i].Tipo.Tamanho > 1 && tabela.Campos[i].Tipo.Tamanho < 4000)
-						sb.AppendLine($"					.HasMaxLength({tabela.Campos[i].Tipo.Tamanho})");
-					if (tabela.Campos[i].Tipo.Banco.ToLower().Contains("date"))
-						sb.AppendLine($"					.HasColumnType({tabela.Campos[i].Tipo.Banco})");
-					sb.AppendLine($"					.HasColumnName(\"{tabela.Campos[i].Nome}\");");
+					if (!tabela.ExisteChave && tabela.Campos.Count > 0)
+					{
+						sb.AppendLine();
+						sb.AppendLine($"				entity.HasKey(e => e.{tabela.Campos[0].Nome});");
+					}
+					sb.AppendLine("			});");
 				}
-				if (pAspNetCore && tabela.Campos.Where(c => c.Chave).ToList().Count == 0)
+				else
 				{
-					sb.AppendLine();
-					sb.AppendLine($"				entity.HasKey(e => e.{tabela.Campos[0].Nome});");
+					for (int i = 0; i < tabela.Campos.Count; i++)
+					{
+						if (i > 0) sb.AppendLine();
+						if (tabela.Campos[i].Chave)
+						{
+							sb.AppendLine($"			{model}.Entity<{tabela.Nome}>().HasKey<{tabela.Campos[i].Tipo.CSharp}>(s => s.{tabela.Campos[i].Nome});");
+							sb.AppendLine();
+						}
+						sb.AppendLine($"			{model}.Entity<{tabela.Nome}>()");
+						sb.AppendLine($"				.Property(p => p.{tabela.Campos[i].Nome})");
+						if (tabela.Campos[i].Tipo.CSharp.ToLower().Equals("string") && tabela.Campos[i].Tipo.Tamanho > 1 && tabela.Campos[i].Tipo.Tamanho < 4000)
+							sb.AppendLine($"				.HasMaxLength({tabela.Campos[i].Tipo.Tamanho})");
+						if (!tabela.Campos[i].Chave)
+						{
+							if (tabela.Campos[i].NotNull)
+								sb.AppendLine("				.IsRequired()");
+							else
+								sb.AppendLine("				.IsOptional()");
+						}
+						if (tabela.Campos[i].Tipo.Banco.ToLower().Contains("date"))
+							sb.AppendLine($"				.HasColumnType(\"{tabela.Campos[i].Tipo.Banco}\")");
+						sb.AppendLine($"				.HasColumnName(\"{tabela.Campos[i].Nome}\");");
+					}
+						
+					tabela.TabelasChaveEstrangeira?.ForEach((chaves) =>
+					{
+						sb.AppendLine();
+						sb.AppendLine($"			{model}.Entity<{tabela.Nome}>()");
+						sb.AppendLine($"				.HasMany(e => e.{chaves})");
+						sb.AppendLine($"				.WithRequired(e => e.{tabela.Nome})");
+						sb.AppendLine("				.WillCascadeOnDelete(false);");
+					});
 				}
-				sb.AppendLine("			});");
 				sb.AppendLine("		}");
 				sb.AppendLine("");
 				sb.AppendLine("	}");
-				sb.AppendLine("}");
+				sb.Append("}");
 
 				Arquivos.Gerar(sb.ToString(), $"OnModelCreating {tabela.Nome}");
 			}
