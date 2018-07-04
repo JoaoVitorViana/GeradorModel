@@ -1,20 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Pragma.Models;
+using System.Collections.Generic;
 
 namespace Pragma
 {
-    public class Parametro
-    {
+    public class Condicao
+	{
         public string Where { get; set; }
         public string Identificador { get; set; }
         public string Campos { get; set; }
-        public List<ParametroUtil> pParametros { get; set; }
-
-        public Parametro(List<Campos> pCampos)
+        public List<Parametro> pParametros { get; set; }
+		
+		public Condicao(List<Campos> pCampos)
         {
             string Parametros = string.Empty;
             string ParametrosWhere = string.Empty;
             string Id = string.Empty;
-            pParametros = new List<ParametroUtil>();
+            pParametros = new List<Parametro>();
             if (pCampos != null && pCampos.Count > 0)
             {
                 for (int i = 0; i < pCampos.Count; i++)
@@ -23,8 +24,8 @@ namespace Pragma
                     string _parametro = Java.GetParametroJava(pCampos[i]);
                     ParametrosWhere += Java.GetTypeParametroJava(pCampos[i], _parametro);
                     Parametros += pCampos[i].Tipo.Java + " " + _parametro + ", ";
-                    pParametros.Add(new ParametroUtil
-                    {
+                    pParametros.Add(new Parametro
+					{
                         Campos = pCampos[i].Nome,
                         Valor = Java.GetTypeParametroJava(pCampos[i], _parametro).Replace(",", "").Trim()
                     });

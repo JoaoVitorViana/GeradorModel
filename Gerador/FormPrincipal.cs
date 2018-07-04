@@ -33,11 +33,6 @@ namespace Utilidades
 			Enabled = false;
 		}
 
-		private void sMSToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			AbrirForm(new FormSMS());
-		}
-
 		private void btnTeste_Click(object sender, EventArgs e)
 		{
 			try

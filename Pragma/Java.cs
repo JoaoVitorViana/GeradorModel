@@ -1,4 +1,5 @@
 ﻿using DB;
+using Pragma.Models;
 using System.Linq;
 using System.Text;
 
@@ -6,7 +7,7 @@ namespace Pragma
 {
 	public class Java
 	{
-		public static void GerarModel(string pPacote, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, Model.UserDB pUsuario, bool pQuery = false, string pComando = null)
+		public static void GerarModel(string pPacote, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, UserDB pUsuario, bool pQuery = false, string pComando = null)
 		{
 			Tabela tabela = Util.GetTabela(pTpBanco, pTabela, pServidor, pBanco, pUsuario, pQuery, pComando);
 

@@ -91,12 +91,6 @@
     <Compile Include="FormPrincipal.Designer.cs">
       <DependentUpon>FormPrincipal.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormSMS.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormSMS.Designer.cs">
-      <DependentUpon>FormSMS.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormAndroid.resx">
@@ -110,9 +104,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormPrincipal.resx">
       <DependentUpon>FormPrincipal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormSMS.resx">
-      <DependentUpon>FormSMS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -159,17 +150,9 @@
       <Project>{1ea398bc-3288-4e19-858e-ccc5c468957e}</Project>
       <Name>DB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Model\Model.csproj">
-      <Project>{c7267a58-4d35-4ebe-9c8e-3c3e62517ad4}</Project>
-      <Name>Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Pragma\Pragma.csproj">
       <Project>{C510E988-E922-427B-A3E9-CDB47B437006}</Project>
       <Name>Pragma</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SMS\SMS.csproj">
-      <Project>{1fc127cc-0d5f-4704-b239-7858fc7a0fc9}</Project>
-      <Name>SMS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +167,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

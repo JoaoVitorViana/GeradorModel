@@ -4,17 +4,17 @@ using System;
 namespace wsRotina
 {
 	public class Processamento
-    {
-        public static void Processar()
-        {
-            try
-            {
+	{
+		public static void Processar()
+		{
+			try
+			{
 
-            }
-            catch (Exception ex)
-            {
-                Util.GravaLog(ex, "Processar");
-            }
-        }
-    }
+			}
+			catch (Exception ex)
+			{
+				Util.GravarLog(ex.ToString(), "Processar");
+			}
+		}
+	}
 }

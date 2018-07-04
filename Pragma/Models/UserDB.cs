@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Pragma.Models
 {
     public class UserDB
     {

@@ -1,4 +1,5 @@
 ﻿using DB;
+using Pragma.Models;
 using System.Linq;
 using System.Text;
 
@@ -17,7 +18,7 @@ namespace Pragma
 			Arquivos.Gerar(sb.ToString(), "POST");
 		}
 
-		public static void GerarModel(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, Model.UserDB pUsuario
+		public static void GerarModel(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, UserDB pUsuario
 									, bool pQuery = false, string pComando = null, bool pDataAnnotations = false, bool pChaveEstrangeira = false)
 		{
 			Tabela tabela = Util.GetTabela(pTpBanco, pTabela, pServidor, pBanco, pUsuario, pQuery, pComando);
@@ -100,7 +101,7 @@ namespace Pragma
 			Arquivos.Gerar(sb.ToString(), "Model " + tabela.Nome);
 		}
 
-		public static void GerarRepositoryEntity(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, Model.UserDB pUsuario
+		public static void GerarRepositoryEntity(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, UserDB pUsuario
 												, bool pAspNetCore = false, bool pGerarInterface = false, bool pGerarDBContext = false, bool pGerarRepository = false)
 		{
 			Tabela tabela = Util.GetTabela(pTpBanco, pTabela, pServidor, pBanco, pUsuario, false, null);

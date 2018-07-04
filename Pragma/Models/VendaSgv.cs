@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace Pragma.Models
 {
     public class VendaSgv
     {

@@ -1,4 +1,5 @@
 ﻿using DB;
+using Pragma.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Pragma
 {
-    public class Mobile
+	public class Mobile
     {
         /// <summary>
         /// Método responsável pela geração da classe de banco de dados do Mobile
@@ -35,7 +36,7 @@ namespace Pragma
             if (string.IsNullOrWhiteSpace(pVariavelTabela))
                 nome_tabela = "mTabela";
 
-            Parametro parametros = new Parametro(chaves);
+			Condicao parametros = new Condicao(chaves);
             string nome_getLista = "get" + pObjeto;
 
             StringBuilder sb = new StringBuilder();
@@ -122,7 +123,7 @@ namespace Pragma
                 Campos campo = new Campos();
                 campo.Nome = dr[1].ToString();
                 campo.NotNull = Convert.ToBoolean(dr[3]);
-                campo.Tipo = new Tipo(dr[2].ToString(), campo.NotNull);
+                campo.Tipo = new TipoBanco(dr[2].ToString(), campo.NotNull);
                 campo.Chave = Convert.ToBoolean(dr[5]);
                 campos.Add(campo);
 

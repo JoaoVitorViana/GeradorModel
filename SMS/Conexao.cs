@@ -8,6 +8,7 @@ namespace SMS
     public class Conexao
     {
         public AutoResetEvent receiveNow;
+
         public void port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             try
@@ -22,6 +23,7 @@ namespace SMS
                 throw ex;
             }
         }
+
         public SerialPort OpenPort(string p_strPortName)
         {
             receiveNow = new AutoResetEvent(false);
@@ -48,6 +50,7 @@ namespace SMS
             }
             return port;
         }
+
         public void ClosePort(SerialPort port)
         {
             try
@@ -61,6 +64,7 @@ namespace SMS
                 throw ex;
             }
         }
+
         public string ReadResponse(SerialPort port, int timeout)
         {
             string buffer = string.Empty;
@@ -89,6 +93,7 @@ namespace SMS
             }
             return buffer;
         }
+
         public string ExecCommand(SerialPort porta, string comandoATT, int tempoResposta, string mensagemErro)
         {
             try

@@ -1,4 +1,4 @@
-﻿namespace Pragma
+﻿namespace Pragma.Models
 {
 	public class ChaveEstrangeira
 	{

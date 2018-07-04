@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Pragma;
+using System;
 using System.Globalization;
 using System.ServiceProcess;
 using System.Threading;
 
 namespace wsRotina
 {
-    public partial class Service1 : ServiceBase
+	public partial class Service1 : ServiceBase
     {
         protected Thread thServico = null;
         public Service1()
@@ -36,7 +37,7 @@ namespace wsRotina
                 }
                 catch (Exception ex)
                 {
-                    Pragma.Util.GravaLog(ex, "Servico");
+                    Util.GravarLog(ex.ToString(), "Servico");
                 }
                 finally
                 {

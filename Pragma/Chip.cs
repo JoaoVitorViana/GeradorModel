@@ -5,7 +5,7 @@ namespace Pragma
 {
     public class Chip
     {
-        public class ChipInfo
+        class ChipInfo
         {
             public int Position { get; set; }
             public string ThisChar { get; set; }

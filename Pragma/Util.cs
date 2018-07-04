@@ -1,8 +1,7 @@
 ﻿using DB;
-using Model;
+using Pragma.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -11,30 +10,6 @@ namespace Pragma
 {
 	public class Util
 	{
-		public static void GravaLog(Exception pException, string pPrograma)
-		{
-			try
-			{
-				SqlServer.GravarLog(pPrograma, pException);
-			}
-			catch (Exception ex)
-			{
-				GravarLog(ex.ToString(), pPrograma);
-			}
-		}
-
-		public static void GravaLog(string pLog, string pPrograma)
-		{
-			try
-			{
-				SqlServer.GravarLog(pPrograma, new Exception(pLog));
-			}
-			catch (Exception ex)
-			{
-				GravarLog(ex.ToString(), pPrograma);
-			}
-		}
-
 		public static void GravarLog(string pLog, string pPrograma)
 		{
 			try
@@ -71,35 +46,6 @@ namespace Pragma
 			return sb.ToString();
 		}
 
-		public static bool EnviarEmail(string pTitulo, string pAssunto, string pMensagem)
-		{
-			try
-			{
-				Email email = new Email();
-				Email.DadosEmail dadosEmail = new Email.DadosEmail();
-				dadosEmail.Assunto = pAssunto;
-				dadosEmail.Titulo = pTitulo;
-
-				List<string> destinatarios = new List<string>();
-				string[] arrayEmail = ConfigurationManager.AppSettings["enderecosEmail"].Split(';');
-				if (arrayEmail != null)
-					foreach (string item in arrayEmail)
-						destinatarios.Add(item);
-
-				dadosEmail.ListaDestinatarios = destinatarios;
-				dadosEmail.Mensagem = pMensagem;
-				dadosEmail.ListaAnexo = null;
-
-				email.EnviaEmail(Email.TipoEmail.Erro, pTitulo, dadosEmail);
-				return true;
-			}
-			catch (Exception ex)
-			{
-				GravaLog(ex, "Enviar_Email");
-				return false;
-			}
-		}
-
 		public static Tabela GetTabela(TpBanco pTpBanco, string pTabela, string pServidor, string pBanco, UserDB pUsuario, bool pQuery, string pComando)
 		{
 			Tabela tabela = null;
@@ -118,10 +64,10 @@ namespace Pragma
 				switch (pTpBanco)
 				{
 					case TpBanco.SqlServer:
-						tabela = SqlServer.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario, schema);
+						tabela = DataBase.SqlServer.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario, schema);
 						break;
 					case TpBanco.MySql:
-						tabela = MySql.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario);
+						tabela = DataBase.MySql.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario);
 						break;
 					default:
 						throw new NotImplementedException();
@@ -142,7 +88,7 @@ namespace Pragma
 			switch (pTpBanco)
 			{
 				case TpBanco.SqlServer:
-					dt = SqlServer.RetornaDB(pUsuario, pServidor).ExecuteDataTable(pQuery);
+					dt = DataBase.SqlServer.RetornaDB(pUsuario, pServidor).ExecuteDataTable(pQuery);
 					break;
 				case TpBanco.MySql:
 					dt = new DB.MySql(pServidor, pUsuario.Usuario, pUsuario.Senha).ExecuteDataTable(pQuery);
@@ -160,7 +106,7 @@ namespace Pragma
 				campo.Chave = false;
 				campo.Nome = dc.ColumnName;
 				campo.NotNull = false;
-				campo.Tipo = new Tipo(dc.DataType.ToString());
+				campo.Tipo = new TipoBanco(dc.DataType.ToString());
 				campos.Add(campo);
 			}
 

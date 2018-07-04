@@ -1,12 +1,12 @@
-﻿using Model;
+﻿using Pragma.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace Pragma
+namespace Pragma.DataBase
 {
-    public class MySql
+	public class MySql
     {
         public static Tabela GetTabelaInfo(string pTabela, string pServidor, string pBanco, UserDB pUsuario)
         {
@@ -30,7 +30,7 @@ namespace Pragma
                 Campos campo = new Campos();
                 campo.Nome = dr[0].ToString();
                 campo.NotNull = dr[3].ToString().ToUpper().Equals("NO") ? true : false;
-                campo.Tipo = new Tipo(dr[1].ToString(), campo.NotNull);
+                campo.Tipo = new TipoBanco(dr[1].ToString(), campo.NotNull);
                 campo.Chave = dr[4].ToString().ToUpper().Equals("PRI") ? true : false;
                 campos.Add(campo);
             }

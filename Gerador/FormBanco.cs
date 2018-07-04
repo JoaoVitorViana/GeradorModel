@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Pragma.DataBase;
+using Pragma.Models;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -42,10 +44,10 @@ namespace Utilidades
 					switch (comboDB.SelectedItem.ToString())
 					{
 						case "Sql Server":
-							ComboTabela(Pragma.SqlServer.GetTabelas(txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), RetornaUsuario()), true);
+							ComboTabela(SqlServer.GetTabelas(txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), RetornaUsuario()), true);
 							break;
 						case "My Sql":
-							ComboTabela(Pragma.MySql.GetTabelas(txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), RetornaUsuario()), true);
+							ComboTabela(MySql.GetTabelas(txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), RetornaUsuario()), true);
 							break;
 					}
 				}
@@ -57,12 +59,12 @@ namespace Utilidades
 			}
 		}
 
-		private Model.UserDB RetornaUsuario()
+		private UserDB RetornaUsuario()
 		{
-			Model.UserDB usuario = null;
+			UserDB usuario = null;
 			if (comboTipoLogon.SelectedIndex == 1)
 			{
-				usuario = new Model.UserDB();
+				usuario = new UserDB();
 				usuario.Usuario = txtUsuario.Text.Trim();
 				usuario.Senha = txtSenha.Text.Trim();
 			}
@@ -357,9 +359,9 @@ namespace Utilidades
 				if (Validacao(out tipoDB))
 				{
 					if (tipoDB == DB.TpBanco.SqlServer)
-						ComboBanco(Pragma.SqlServer.GetBancos(txtServidor.Text.Trim(), RetornaUsuario()), true);
+						ComboBanco(SqlServer.GetBancos(txtServidor.Text.Trim(), RetornaUsuario()), true);
 					else if (tipoDB == DB.TpBanco.MySql)
-						ComboBanco(Pragma.MySql.GetBancos(txtServidor.Text.Trim(), RetornaUsuario()), true);
+						ComboBanco(MySql.GetBancos(txtServidor.Text.Trim(), RetornaUsuario()), true);
 					else
 						throw new NotImplementedException();
 				}

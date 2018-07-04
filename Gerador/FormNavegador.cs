@@ -1,6 +1,6 @@
 ﻿using DB;
 using Microsoft.Win32;
-using Model;
+using Pragma.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Utilidades
 {
-    public partial class FormNavegador : Form
+	public partial class FormNavegador : Form
     {
         protected string mensagem;
         protected string erro;

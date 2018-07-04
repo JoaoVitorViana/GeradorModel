@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Pragma
+namespace Pragma.Models
 {
-	public class Tipo
+	public class TipoBanco
 	{
-		public Tipo(string pTypeBanco, bool pNotNull, string pTamanho = null)
+		public TipoBanco(string pTypeBanco, bool pNotNull, string pTamanho = null)
 		{
 			this.Banco = pTypeBanco;
 			this.CSharp = pTypeBanco;
@@ -86,7 +86,7 @@ namespace Pragma
 			}
 		}
 
-		public Tipo(string pTypeData)
+		public TipoBanco(string pTypeData)
 		{
 			this.Banco = pTypeData.Replace("System.", "");
 			this.CSharp = pTypeData.Replace("System.", "");
@@ -96,13 +96,13 @@ namespace Pragma
 			{
 				this.CSharp = "Int64?";
 				this.Java = "java.math.BigInteger";
-				this.Banco = "BIGINT";
+				this.Banco = "bigint";
 			}
 			else if (pTypeData.ToUpper().Contains("STRING"))
 			{
 				this.CSharp = "string";
 				this.Java = "String";
-				this.Banco = "VARCHAR";
+				this.Banco = "varchar";
 			}
 			else if (pTypeData.ToUpper().Contains("INT32"))
 			{
@@ -114,31 +114,31 @@ namespace Pragma
 			{
 				this.CSharp = "DateTime?";
 				this.Java = "Date";
-				this.Banco = "DATETIME";
+				this.Banco = "datetime";
 			}
 			else if (pTypeData.ToUpper().Contains("BOOLEAN"))
 			{
 				this.CSharp = "bool?";
 				this.Java = "boolean";
-				this.Banco = "BIT";
+				this.Banco = "bit";
 			}
 			else if (pTypeData.ToUpper().Contains("DECIMAL"))
 			{
 				this.CSharp = "decimal?";
 				this.Java = "double";
-				this.Banco = "Decimal";
+				this.Banco = "decimal";
 			}
 			else if (pTypeData.ToUpper().Contains("INT16"))
 			{
 				this.CSharp = "Int16?";
 				this.Java = "int";
-				this.Banco = "SMALLINT";
+				this.Banco = "smallint";
 			}
 		}
 
-		public string Banco { get; set; }
-		public string CSharp { get; set; }
-		public string Java { get; set; }
-		public int Tamanho { get; set; }
+		public string Banco { get; private set; }
+		public string CSharp { get; private set; }
+		public string Java { get; private set; }
+		public int Tamanho { get; private set; }
 	}
 }

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace SMS
 {
-    public class Util
+    public class UtilSMS
     {
         /// <summary>
         /// Script de Criação das Tabelas para Enviar SMS

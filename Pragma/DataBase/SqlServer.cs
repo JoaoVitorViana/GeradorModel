@@ -1,4 +1,4 @@
-﻿using Model;
+﻿using Pragma.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Pragma
+namespace Pragma.DataBase
 {
 	public class SqlServer
 	{
@@ -67,7 +67,7 @@ namespace Pragma
 						Tabelas = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()) ? dr[9].ToString().Split(',') : null
 					}
 				};
-				campo.Tipo = new Tipo(dr[6].ToString(), campo.NotNull, (dr[7] != DBNull.Value) ? dr[7].ToString() : null);
+				campo.Tipo = new TipoBanco(dr[6].ToString(), campo.NotNull, (dr[7] != DBNull.Value) ? dr[7].ToString() : null);
 				campos.Add(campo);
 			}
 
@@ -154,12 +154,12 @@ namespace Pragma
 				{
 					string query = "BACKUP DATABASE " + pDataBase + " TO DISK='" + pLocalBkp + @"\" + pDataBase + ".BAK'";
 					RetornaDB(pUsuario, pServidor).ExecuteNonQuery(query);
-					Util.GravaLog("Gerado BKP " + pDataBase + " com sucesso " + DateTime.Now.ToString("ddMMyyyy"), "GerarBackupFull");
+					Util.GravarLog("Gerado BKP " + pDataBase + " com sucesso " + DateTime.Now.ToString("ddMMyyyy"), "GerarBackupFull");
 				}
 			}
 			catch (Exception ex)
 			{
-				Util.GravaLog(ex, "GerarBackupFull");
+				Util.GravarLog(ex.ToString(), "GerarBackupFull");
 				throw ex;
 			}
 		}
@@ -172,43 +172,13 @@ namespace Pragma
 				{
 					string query = "BACKUP LOG " + pDataBase + " TO DISK='" + pLocalBkp + @"\" + pDataBase + DateTime.Now.ToString("HHmmss") + ".TRN'";
 					RetornaDB(pUsuario, pServidor).ExecuteNonQuery(query);
-					Util.GravaLog("Gerado BKP " + pDataBase + " com sucesso " + DateTime.Now.ToString("HHmmss"), "GerarBackupLog");
+					Util.GravarLog("Gerado BKP " + pDataBase + " com sucesso " + DateTime.Now.ToString("HHmmss"), "GerarBackupLog");
 				}
 			}
 			catch (Exception ex)
 			{
-				Util.GravaLog(ex, "GerarBackupLog");
+				Util.GravarLog(ex.ToString(), "GerarBackupLog");
 				throw ex;
-			}
-		}
-
-		public static void GravarLog(string pProjeto, Exception pEx)
-		{
-			try
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.AppendLine("IF OBJECT_ID('Viana.dbo.LogErro') IS NULL");
-				sb.AppendLine("BEGIN");
-				sb.AppendLine("	CREATE TABLE Viana.dbo.LogErro(Id BIGINT IDENTITY(1,1),");
-				sb.AppendLine("						 CONSTRAINT pk_LogErro PRIMARY KEY (Id),");
-				sb.AppendLine("						 Projeto VARCHAR(100),");
-				sb.AppendLine("						 DataHora DATETIME CONSTRAINT df_LogErro_DataHora DEFAULT GETDATE(),");
-				sb.AppendLine("						 Erro VARCHAR(1000),");
-				sb.AppendLine("						 Erro_Completo VARCHAR(MAX))");
-				sb.AppendLine("END");
-
-				LogErro log = new LogErro();
-				log.Projeto = pProjeto;
-				log.Erro_Completo = pEx.ToString();
-				log.Erro = pEx.Message;
-
-				new DB.SqlServer(@"TI002833\TI002833").ExecuteNonQuery(sb.ToString());
-				new DB.GenericSqlServer(@"TI002833\TI002833", "Viana").Salvar(log);
-			}
-			catch (Exception ex)
-			{
-				Util.GravarLog(pEx.ToString(), pProjeto);
-				Util.GravarLog(ex.ToString(), pProjeto);
 			}
 		}
 
@@ -236,7 +206,7 @@ namespace Pragma
 			}
 			catch (Exception ex)
 			{
-				Util.GravaLog(ex, "RotinaBackup");
+				Util.GravarLog(ex.ToString(), "RotinaBackup");
 			}
 		}
 	}

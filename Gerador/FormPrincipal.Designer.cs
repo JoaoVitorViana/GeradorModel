@@ -33,8 +33,6 @@
 			this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.androidToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dAOEModelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.inputsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.sMSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.lbVersao = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.menuStrip1.SuspendLayout();
@@ -46,8 +44,7 @@
 			this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
 			this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuToolStripMenuItem,
-            this.inputsToolStripMenuItem});
+            this.menuToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(217, 25);
@@ -66,31 +63,16 @@
 			// androidToolStripMenuItem
 			// 
 			this.androidToolStripMenuItem.Name = "androidToolStripMenuItem";
-			this.androidToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.androidToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.androidToolStripMenuItem.Text = "Android";
 			this.androidToolStripMenuItem.Click += new System.EventHandler(this.androidToolStripMenuItem_Click);
 			// 
 			// dAOEModelToolStripMenuItem
 			// 
 			this.dAOEModelToolStripMenuItem.Name = "dAOEModelToolStripMenuItem";
-			this.dAOEModelToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.dAOEModelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.dAOEModelToolStripMenuItem.Text = "Model";
 			this.dAOEModelToolStripMenuItem.Click += new System.EventHandler(this.dAOEModelToolStripMenuItem_Click);
-			// 
-			// inputsToolStripMenuItem
-			// 
-			this.inputsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sMSToolStripMenuItem});
-			this.inputsToolStripMenuItem.Name = "inputsToolStripMenuItem";
-			this.inputsToolStripMenuItem.Size = new System.Drawing.Size(84, 21);
-			this.inputsToolStripMenuItem.Text = "Operações";
-			// 
-			// sMSToolStripMenuItem
-			// 
-			this.sMSToolStripMenuItem.Name = "sMSToolStripMenuItem";
-			this.sMSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.sMSToolStripMenuItem.Text = "SMS";
-			this.sMSToolStripMenuItem.Click += new System.EventHandler(this.sMSToolStripMenuItem_Click);
 			// 
 			// lbVersao
 			// 
@@ -140,10 +122,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem androidToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem inputsToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem dAOEModelToolStripMenuItem;
         private System.Windows.Forms.Label lbVersao;
-        private System.Windows.Forms.ToolStripMenuItem sMSToolStripMenuItem;
 	}
 }

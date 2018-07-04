@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pragma
+namespace Pragma.Models
 {
 	public class Tabela
 	{

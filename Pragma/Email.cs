@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pragma.Models;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
@@ -9,7 +10,6 @@ namespace Pragma
 {
     public class Email
     {
-
         public enum TipoEmail
         {
             Alerta = 1,
@@ -38,7 +38,7 @@ namespace Pragma
 
         public Retorno EnviaEmail(TipoEmail Tipo, string Servico, DadosEmail DadosEmail)
         {
-            Retorno ret = new Retorno();
+			Retorno ret = new Retorno();
             try
             {
                 string SenderDisplayName = Servico;
