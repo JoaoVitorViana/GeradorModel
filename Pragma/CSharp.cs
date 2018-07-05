@@ -249,6 +249,9 @@ namespace Pragma
 						sb.AppendLine($"				.WithRequired(e => e.{tabela.Nome})");
 						sb.AppendLine("				.WillCascadeOnDelete(false);");
 					});
+
+					sb.AppendLine();
+					sb.AppendLine($"			{model}.Entity<{tabela.Nome}>().ToTable(\"{tabela.Nome}\");");
 				}
 				sb.AppendLine("		}");
 				sb.AppendLine("");
