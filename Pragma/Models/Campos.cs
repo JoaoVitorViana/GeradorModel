@@ -8,5 +8,6 @@
 		public bool Chave { get; set; }
 		public bool NotNull { get; set; }
 		public bool ValorDefault { get; set; }
+		public bool Identity { get; set; }
 	}
 }

@@ -19,15 +19,19 @@ namespace Pragma.DataBase
 			};
 
 			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, COLUMN_NAME, COLUMN_DEFAULT, CASE WHEN IS_NULLABLE = 'YES' THEN 0 ELSE 1 END AS NotNull, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH");
+			sb.AppendLine($"USE [{pBanco}]");
+			sb.AppendLine();
+			sb.AppendLine("SELECT DB_NAME(DB_ID()) AS TABLE_CATALOG, t2.name AS TABLE_SCHEMA, t1.name AS TABLE_NAME, t0.name AS COLUMN_NAME");
+			sb.AppendLine(", CASE t0.is_nullable WHEN 0 THEN 1 ELSE 0 END NotNull, t3.name AS DATA_TYPE, t0.is_identity AS IsIdentity");
 			sb.AppendLine(",(SELECT CASE WHEN COUNT(1) <= 0 THEN 0 ELSE 1 END");
 			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[TABLE_CONSTRAINTS] AS TC");
 			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[KEY_COLUMN_USAGE] AS KU ON (TC.CONSTRAINT_TYPE = 'PRIMARY KEY' AND TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME)");
-			sb.AppendLine("WHERE KU.table_name = t0.TABLE_NAME");
-			sb.AppendLine("AND KU.COLUMN_NAME = t0.COLUMN_NAME) AS IsChave");
+			sb.AppendLine("WHERE KU.table_name = t1.name");
+			sb.AppendLine("AND KU.COLUMN_NAME = t0.name");
+			sb.AppendLine("AND KU.TABLE_SCHEMA = t2.name) AS IsChave");
 			sb.AppendLine(",CAST(STUFF((SELECT  ',' + t.TargetTable");
 			sb.AppendLine("FROM (");
-			sb.AppendLine("SELECT ccu.table_name AS SourceTable");
+			sb.AppendLine("SELECT DISTINCT ccu.table_name AS SourceTable");
 			sb.AppendLine("    ,ccu.constraint_name AS SourceConstraint");
 			sb.AppendLine("    ,ccu.column_name AS SourceColumn");
 			sb.AppendLine("    ,kcu.table_name AS TargetTable");
@@ -35,15 +39,22 @@ namespace Pragma.DataBase
 			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] ccu");
 			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[REFERENTIAL_CONSTRAINTS] rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
 			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[KEY_COLUMN_USAGE] kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");
-			sb.AppendLine("WHERE ccu.TABLE_NAME = t0.TABLE_NAME");
-			sb.AppendLine("AND ccu.TABLE_SCHEMA = t0.TABLE_SCHEMA");
-			sb.AppendLine("AND ccu.COLUMN_NAME = t0.COLUMN_NAME");
+			sb.AppendLine("WHERE ccu.TABLE_NAME = t1.name");
+			sb.AppendLine("AND ccu.TABLE_SCHEMA = t2.name");
+			sb.AppendLine("AND ccu.COLUMN_NAME = t0.name");
 			sb.AppendLine(") t FOR XML PATH('')), 1, 1, '') AS VARCHAR(MAX)) AS TabelaChaveEstrangeira");
-			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[COLUMNS] t0");
-			sb.AppendLine("WHERE t0.TABLE_NAME = @Tabela");
-			if (!string.IsNullOrWhiteSpace(pSchema))
-				sb.AppendLine("AND t0.TABLE_SCHEMA = @Schema");
-			sb.AppendLine("ORDER BY ORDINAL_POSITION");
+			sb.AppendLine(",(SELECT CHARACTER_MAXIMUM_LENGTH");
+			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[COLUMNS] c");
+			sb.AppendLine("WHERE c.TABLE_NAME = t1.name");
+			sb.AppendLine("AND c.COLUMN_NAME = t0.name");
+			sb.AppendLine("AND c.TABLE_SCHEMA = t2.name) AS MaxLenght");
+			sb.AppendLine("FROM sys.columns t0");
+			sb.AppendLine("JOIN sys.tables t1 ON (t0.object_id = t1.object_id)");
+			sb.AppendLine("JOIN sys.schemas t2 ON (t1.schema_id = t2.schema_id)");
+			sb.AppendLine("JOIN sys.types t3 ON (t3.user_type_id = t0.user_type_id)");
+			sb.AppendLine("WHERE t1.name = @Tabela");
+			sb.AppendLine("AND t2.name = @Schema");
+			sb.AppendLine("ORDER BY t0.column_id");
 
 			List<DB.DBParametros> pmts = new List<DB.DBParametros>();
 			pmts.Add(new DB.DBParametros { Name = "Tabela", Value = tabela.Nome });
@@ -59,15 +70,16 @@ namespace Pragma.DataBase
 				Campos campo = new Campos
 				{
 					Nome = dr[3].ToString(),
-					NotNull = Convert.ToBoolean(dr[5]),
-					Chave = Convert.ToBoolean(dr[8]),
+					NotNull = Convert.ToBoolean(dr[4]),
+					Chave = Convert.ToBoolean(dr[7]),
 					ChaveEstrangeira = new ChaveEstrangeira()
 					{
-						Is = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()),
-						Tabelas = dr[9] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[9].ToString()) ? dr[9].ToString().Split(',') : null
-					}
+						Is = dr[8] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[8].ToString()),
+						Tabelas = dr[8] != DBNull.Value && !string.IsNullOrWhiteSpace(dr[8].ToString()) ? dr[8].ToString().Split(',') : null
+					},
+					Identity = Convert.ToBoolean(dr[6])
 				};
-				campo.Tipo = new TipoBanco(dr[6].ToString(), campo.NotNull, (dr[7] != DBNull.Value) ? dr[7].ToString() : null);
+				campo.Tipo = new TipoBanco(dr[5].ToString(), campo.NotNull, (dr[7] != DBNull.Value) ? dr[7].ToString() : null);
 				campos.Add(campo);
 			}
 
@@ -78,7 +90,9 @@ namespace Pragma.DataBase
 
 			//Chave Estrangeira
 			sb = new StringBuilder();
-			sb.AppendLine("SELECT ccu.table_name AS SourceTable");
+			sb.AppendLine($"USE [{pBanco}]");
+			sb.AppendLine();
+			sb.AppendLine("SELECT DISTINCT ccu.table_name AS SourceTable");
 			sb.AppendLine($"FROM [{tabela.Banco}].[INFORMATION_SCHEMA].[CONSTRAINT_COLUMN_USAGE] ccu");
 			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[REFERENTIAL_CONSTRAINTS] rc ON (ccu.CONSTRAINT_NAME = rc.CONSTRAINT_NAME)");
 			sb.AppendLine($"JOIN [{tabela.Banco}].[INFORMATION_SCHEMA].[KEY_COLUMN_USAGE] kcu ON (kcu.CONSTRAINT_NAME = rc.UNIQUE_CONSTRAINT_NAME)");

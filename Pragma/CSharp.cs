@@ -61,12 +61,24 @@ namespace Pragma
 				}
 			}
 
+			int qtdChaves = (tabela.Campos != null) ? tabela.Campos.Where(c => c.Chave).Count() : 0;
+			int chaveIndex = 0;
+
 			tabela.Campos?.ForEach((campo) =>
 			{
 				if (pDataAnnotations)
 				{
 					if (campo.Chave)
+					{
 						sb.AppendLine("        [Key]");
+						if (qtdChaves > 1)
+						{
+							sb.AppendLine($"        [Column(Order = {chaveIndex++})]");
+							if (!campo.Identity) sb.AppendLine("        [DatabaseGenerated(DatabaseGeneratedOption.None)]");
+						}
+					}
+					else if (campo.Identity)
+						sb.AppendLine("        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]");
 					else if (campo.NotNull)
 						sb.AppendLine("        [Required(ErrorMessage = \"*Campo obrigatório.\")]");
 					if (campo.Tipo.Banco.ToLower().Equals("date"))
@@ -240,7 +252,7 @@ namespace Pragma
 							sb.AppendLine($"				.HasColumnType(\"{tabela.Campos[i].Tipo.Banco}\")");
 						sb.AppendLine($"				.HasColumnName(\"{tabela.Campos[i].Nome}\");");
 					}
-						
+
 					tabela.TabelasChaveEstrangeira?.ForEach((chaves) =>
 					{
 						sb.AppendLine();
