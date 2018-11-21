@@ -394,7 +394,18 @@ namespace Utilidades
 						}
 					}
 					else
-						throw new NotImplementedException();
+					{
+						if (string.IsNullOrWhiteSpace(txtQuery.Text)) throw new Exception("Query não informada");
+
+						switch (comboLinguagem.SelectedItem.ToString())
+						{
+							case "C#":
+								Pragma.CSharp.GerarRepositoryEntity(txtPacote.Text, comboTabela.Text, txtServidor.Text.Trim(), comboBanco.Text, tipoDB, RetornaUsuario(), cbAspNetCore.Checked, true, false, true, txtQuery.Text.Trim());
+								break;
+							case "Java":
+								throw new NotImplementedException();
+						}
+					}
 				}
 			}
 			catch (Exception ex)

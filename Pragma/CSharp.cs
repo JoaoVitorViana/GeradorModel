@@ -114,9 +114,9 @@ namespace Pragma
 		}
 
 		public static void GerarRepositoryEntity(string pNamespace, string pTabela, string pServidor, string pBanco, TpBanco pTpBanco, UserDB pUsuario
-												, bool pAspNetCore = false, bool pGerarInterface = false, bool pGerarDBContext = false, bool pGerarRepository = false)
+												, bool pAspNetCore = false, bool pGerarInterface = false, bool pGerarDBContext = false, bool pGerarRepository = false, string pQuery = null)
 		{
-			Tabela tabela = Util.GetTabela(pTpBanco, pTabela, pServidor, pBanco, pUsuario, false, null);
+			Tabela tabela = Util.GetTabela(pTpBanco, pTabela, pServidor, pBanco, pUsuario, pQuery != null, pQuery);
 
 			string classeNome = $"{tabela.Nome}Repository";
 			string interfaceNome = $"I{tabela.Nome}Repository";
@@ -162,7 +162,7 @@ namespace Pragma
 			}
 			#endregion
 
-			#region OnModelCreating
+			#region DbContext
 			if (pGerarDBContext)
 			{
 				sb = new StringBuilder();

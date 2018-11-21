@@ -22,14 +22,14 @@ namespace Pragma
 				sb.AppendLine("");
 			}
 			sb.Append(Util.GetUser());
-			sb.AppendLine("");
+			sb.AppendLine();
 			sb.AppendLine($"public class {nomeClasse} " + "{");
 			foreach (Campos campo in tabela.Campos)
 				sb.AppendLine($"    private {campo.Tipo.Java} {campo.Nome}\";");
 
 			foreach (Campos campo in tabela.Campos)
 			{
-				sb.AppendLine("");
+				sb.AppendLine();
 				sb.AppendLine($"    public {campo.Tipo.Java} get{campo.Nome}()" + " {");
 				sb.AppendLine("        return this." + campo.Nome + ";");
 				sb.AppendLine("    }");
@@ -46,7 +46,7 @@ namespace Pragma
 
 		public static string GetTypeParametroJava(Campos campo, string pParametro, bool pVirgula = true)
 		{
-			return ((!campo.Tipo.Java.Equals("String")) ? "String.valueOf(" + pParametro + ")" : pParametro) + ((pVirgula) ? ", " : "");
+			return ((!campo.Tipo.Java.Equals("String")) ? "String.valueOf(" + pParametro + ")" : pParametro) + (pVirgula ? ", " : "");
 		}
 
 		public static string GetParametroJava(Campos campo) => $"p{IO.ToTitleCase(campo.Nome)}";

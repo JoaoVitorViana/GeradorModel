@@ -10,6 +10,7 @@ namespace DB
         protected SQLiteConnection Conn;
         protected SQLiteCommand Cmd;
         protected SQLiteTransaction Tra = null;
+
         public SqlLite(string pDataBase)
         {
             try
@@ -22,16 +23,19 @@ namespace DB
                 throw ex;
             }
         }
+
         public void AbreConexao()
         {
             if (Conn.State != ConnectionState.Open)
                 Conn.Open();
         }
+
         public void FechaConexao()
         {
             if (Conn.State == ConnectionState.Open)
                 Conn.Close();
         }
+
         public DataTable ExecuteDataTable(string pComandoSQL, List<DBParametros> pParametros = null)
         {
             DataTable dt = new DataTable();
@@ -64,6 +68,7 @@ namespace DB
             }
             return dt;
         }
+
         public object ExecuteScalar(string pComandoSQL, List<DBParametros> pParametros = null)
         {
             object retorno;
@@ -96,6 +101,7 @@ namespace DB
 
             return retorno;
         }
+
         public int ExecuteNonQuery(string pComandoSQL, List<DBParametros> pParametros = null)
         {
             int retorno;

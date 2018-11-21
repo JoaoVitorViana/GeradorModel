@@ -10,6 +10,7 @@ namespace DB
         private object Valor { get; set; }
         private DbType TipoDados { get; set; }
         private Operador Operador { get; set; }
+
         public Parametro(string pCampo, object pValor, DbType pTipoDados, Operador pOperador)
         {
             Campo = pCampo;
@@ -17,6 +18,7 @@ namespace DB
             TipoDados = pTipoDados;
             Operador = pOperador;
         }
+
         public Parametro(string pCampo, object pValor, DbType pTipoDados)
         {
             Campo = pCampo;
@@ -24,6 +26,7 @@ namespace DB
             TipoDados = pTipoDados;
             Operador = Operador.Nenhum;
         }
+
         public Parametro(string pCampo, object pValor)
         {
             Campo = pCampo;
@@ -32,6 +35,7 @@ namespace DB
             TipoDados = (DbType)Enum.Parse(typeof(DbType), t.Name);
             Operador = Operador.Nenhum;
         }
+
         public Parametro(string pCampo, object pValor, Operador pOperador)
         {
             Campo = pCampo;
@@ -40,6 +44,7 @@ namespace DB
             TipoDados = (DbType)Enum.Parse(typeof(DbType), t.Name);
             Operador = pOperador;
         }
+
         private string CampoTabela(string pCampo, TpBanco pTipoBanco)
         {
             string CampoTabela = string.Empty;
@@ -77,6 +82,7 @@ namespace DB
             }
             return CampoTabela;
         }
+
         private string CampoVarivel(string pCampo, string pParametro, TpBanco pTipoBanco)
         {
             string CampoVarivel = string.Empty;
@@ -114,6 +120,7 @@ namespace DB
             }
             return CampoVarivel;
         }
+
         private string Condicao(string pCampo, string pParametro, TpBanco pTipoBanco)
         {
             string strFormato = "";
@@ -146,6 +153,7 @@ namespace DB
 
             return string.Format(strFormato, CampoTabela(pCampo, pTipoBanco), CampoVarivel(pCampo, pParametro, pTipoBanco));
         }
+
         public string GetCondicao(string pParametro, TpBanco pTipoBanco)
         {
             string retorno = string.Empty;
@@ -160,6 +168,7 @@ namespace DB
                 retorno = Condicao(Campo, pParametro, pTipoBanco);
             return retorno;
         }
+
         public List<DBParametros> GetParametros()
         {
             List<DBParametros> pmts = new List<DBParametros>();

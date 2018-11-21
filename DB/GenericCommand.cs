@@ -60,9 +60,9 @@ namespace DB
 				this.Update = (CamposPrimaryKeys.Where(x => Convert.ToInt64(x.GetValue(pObjeto)) > 0).Count() > 0);
 
 				StringBuilder sbQuery = new StringBuilder();
-				sbQuery.Append(((Update) ? "UPDATE " : "INSERT INTO "));
+				sbQuery.Append(Update ? "UPDATE " : "INSERT INTO ");
 				sbQuery.Append(pTabela + " ");
-				sbQuery.Append((Update) ? "SET " : "(");
+				sbQuery.Append(Update ? "SET " : "(");
 
 				StringBuilder sbCampos = new StringBuilder();
 				this.Parametros = new List<DBParametros>();

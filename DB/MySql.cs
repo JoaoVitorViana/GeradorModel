@@ -10,6 +10,7 @@ namespace DB
         protected MySqlConnection Conn;
         protected MySqlCommand Cmd;
         protected MySqlTransaction Tra = null;
+
         private MySqlConnection RetornaConexao(string pConexao, string pUsuario, string pSenha)
         {
             MySqlConnectionStringBuilder Connection = new MySqlConnectionStringBuilder();
@@ -22,6 +23,7 @@ namespace DB
             oSqlConn.ConnectionString = Connection.ConnectionString;
             return oSqlConn;
         }
+
         public MySql(string pServer, string pUsuario = "root", string pSenha = null)
         {
             try
@@ -36,16 +38,19 @@ namespace DB
                 throw ex;
             }
         }
+
         public void AbreConexao()
         {
             if (Conn.State != ConnectionState.Open)
                 Conn.Open();
         }
+
         public void FechaConexao()
         {
             if (Conn.State == ConnectionState.Open)
                 Conn.Close();
         }
+
         public DataSet ExecuteDataSet(string pComandoSQL, List<DBParametros> pParametros = null)
         {
             DataSet ds = new DataSet();
@@ -81,6 +86,7 @@ namespace DB
 
             return ds;
         }
+
         public DataTable ExecuteDataTable(string pComandoSQL, List<DBParametros> pParametros = null)
         {
             DataTable dt = new DataTable();
@@ -94,6 +100,7 @@ namespace DB
             }
             return dt;
         }
+
         public int ExecuteNonQuery(string pComandoSQL, List<DBParametros> pParametros = null)
         {
             int retorno;
@@ -126,6 +133,7 @@ namespace DB
 
             return retorno;
         }
+
         public object ExecuteScalar(string pComandoSQL, List<DBParametros> pParametros = null)
         {
             object retorno;
@@ -158,17 +166,20 @@ namespace DB
 
             return retorno;
         }
+
         public void IniciarTransacao()
         {
             Tra = Conn.BeginTransaction();
             Cmd.Transaction = Tra;
         }
+
         public void ComitarTransacao()
         {
             Tra.Commit();
             Cmd.Transaction = null;
             Tra = null;
         }
+
         public void DesfazerTransacao()
         {
             Tra.Rollback();
