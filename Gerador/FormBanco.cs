@@ -224,10 +224,10 @@ namespace Utilidades
 							switch (comboLinguagem.SelectedItem.ToString())
 							{
 								case "C#":
-									Pragma.CSharp.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), null, tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
+									Pragma.CSharp.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
 									break;
 								case "Java":
-									Pragma.Java.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), null, tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
+									Pragma.Java.GerarModel(txtPacote.Text, txtNomeClasse.Text.Trim(), txtServidor.Text.Trim(), comboBanco.SelectedValue.ToString(), tipoDB, RetornaUsuario(), true, txtQuery.Text.Trim());
 									break;
 							}
 						}

@@ -8,111 +8,111 @@ using System.Text;
 
 namespace Pragma
 {
-	public class Util
-	{
-		public static void GravarLog(string pLog, string pPrograma)
-		{
-			try
-			{
-				GravaTexto(PathLog, pLog, pPrograma);
-			}
-			catch { }
-		}
+    public class Util
+    {
+        public static void GravarLog(string pLog, string pPrograma)
+        {
+            try
+            {
+                GravaTexto(PathLog, pLog, pPrograma);
+            }
+            catch { }
+        }
 
-		public static string GravaTexto(string pPathLog, string pLog, string pNome, string pFormat = ".txt")
-		{
-			if (!Directory.Exists(pPathLog))
-				Directory.CreateDirectory(pPathLog);
+        public static string GravaTexto(string pPathLog, string pLog, string pNome, string pFormat = ".txt")
+        {
+            if (!Directory.Exists(pPathLog))
+                Directory.CreateDirectory(pPathLog);
 
-			string retorno = pPathLog + pNome + pFormat;
+            string retorno = pPathLog + pNome + pFormat;
 
-			StreamWriter sw = new StreamWriter(retorno, false, Encoding.Default);
-			sw.Write(pLog);
-			sw.Close();
+            StreamWriter sw = new StreamWriter(retorno, false, Encoding.Default);
+            sw.Write(pLog);
+            sw.Close();
 
-			return retorno;
-		}
+            return retorno;
+        }
 
-		public static string PathLog = AppDomain.CurrentDomain.BaseDirectory + @"Log\";
+        public static string PathLog = AppDomain.CurrentDomain.BaseDirectory + @"Log\";
 
-		public static string PathBkp = @"D:\bkp";
+        public static string PathBkp = @"D:\bkp";
 
-		public static string GetUser()
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("/**");
-			sb.AppendLine($" * Created by {Environment.UserName} on {DateTime.Now.ToString("dd/MM/yyyy")}.");
-			sb.AppendLine(" */");
-			return sb.ToString();
-		}
+        public static string GetUser()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("/**");
+            sb.AppendLine($" * Created by {Environment.UserName} on {DateTime.Now.ToString("dd/MM/yyyy")}.");
+            sb.AppendLine(" */");
+            return sb.ToString();
+        }
 
-		public static Tabela GetTabela(TpBanco pTpBanco, string pTabela, string pServidor, string pBanco, UserDB pUsuario, bool pQuery, string pComando)
-		{
-			Tabela tabela = null;
-			var schemaTabela = pTabela.Split('.');
-			string schema = string.Empty;
-			string tabelaNome = pTabela;
-			if (schemaTabela != null && schemaTabela.Length > 1)
-			{
-				schema = schemaTabela[0];
-				tabelaNome = schemaTabela[1];
-			}
-			
-			if (pQuery)
-				tabela = GetQueryInfo(pComando, pServidor, tabelaNome, pTpBanco, pUsuario);
-			else
-				switch (pTpBanco)
-				{
-					case TpBanco.SqlServer:
-						tabela = DataBase.SqlServer.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario, schema);
-						break;
-					case TpBanco.MySql:
-						tabela = DataBase.MySql.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario);
-						break;
-					default:
-						throw new NotImplementedException();
-				}
+        public static Tabela GetTabela(TpBanco pTpBanco, string pTabela, string pServidor, string pBanco, UserDB pUsuario, bool pQuery, string pComando)
+        {
+            Tabela tabela = null;
+            var schemaTabela = pTabela.Split('.');
+            string schema = string.Empty;
+            string tabelaNome = pTabela;
+            if (schemaTabela.Length > 1)
+            {
+                schema = schemaTabela[0];
+                tabelaNome = schemaTabela[1];
+            }
 
-			if (tabela == null)
-				throw new NotImplementedException();
+            if (pQuery)
+                tabela = GetQueryInfo(pComando, pServidor, tabelaNome, pTpBanco, pUsuario, pBanco);
+            else
+                switch (pTpBanco)
+                {
+                    case TpBanco.SqlServer:
+                        tabela = DataBase.SqlServer.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario, schema);
+                        break;
+                    case TpBanco.MySql:
+                        tabela = DataBase.MySql.GetTabelaInfo(tabelaNome, pServidor, pBanco, pUsuario);
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
 
-			return tabela;
-		}
+            if (tabela == null)
+                throw new NotImplementedException();
 
-		public static Tabela GetQueryInfo(string pQuery, string pServidor, string pTabela, TpBanco pTpBanco, UserDB pUsuario)
-		{
-			if (pQuery == null)
-				throw new Exception("Query não informada, Verifique");
+            return tabela;
+        }
 
-			DataTable dt = new DataTable();
-			switch (pTpBanco)
-			{
-				case TpBanco.SqlServer:
-					dt = DataBase.SqlServer.RetornaDB(pUsuario, pServidor).ExecuteDataTable(pQuery);
-					break;
-				case TpBanco.MySql:
-					dt = new DB.MySql(pServidor, pUsuario.Usuario, pUsuario.Senha).ExecuteDataTable(pQuery);
-					break;
-			}
+        public static Tabela GetQueryInfo(string pQuery, string pServidor, string pTabela, TpBanco pTpBanco, UserDB pUsuario, string pBanco)
+        {
+            if (pQuery == null)
+                throw new Exception("Query não informada, Verifique");
 
-			Tabela tabela = new Tabela();
-			tabela.Nome = pTabela.Trim();
+            DataTable dt = new DataTable();
+            switch (pTpBanco)
+            {
+                case TpBanco.SqlServer:
+                    dt = DataBase.SqlServer.RetornaDB(pUsuario, pServidor, pBanco).ExecuteDataTable(pQuery);
+                    break;
+                case TpBanco.MySql:
+                    dt = new DB.MySql(pServidor, pUsuario.Usuario, pUsuario.Senha).ExecuteDataTable(pQuery);
+                    break;
+            }
 
-			List<Campos> campos = new List<Campos>();
-			Campos campo = null;
-			foreach (DataColumn dc in dt.Columns)
-			{
-				campo = new Campos();
-				campo.Chave = false;
-				campo.Nome = dc.ColumnName;
-				campo.NotNull = false;
-				campo.Tipo = new TipoBanco(dc.DataType.ToString());
-				campos.Add(campo);
-			}
+            Tabela tabela = new Tabela { Nome = pTabela.Trim() };
 
-			tabela.Campos = campos;
+            List<Campos> campos = new List<Campos>();
+            foreach (DataColumn dc in dt.Columns)
+            {
+                var campo = new Campos
+                {
+                    Chave = false,
+                    Nome = dc.ColumnName,
+                    NotNull = false,
+                    Tipo = new TipoBanco(dc.DataType.ToString())
+                };
+                campos.Add(campo);
+            }
 
-			return tabela;
-		}
-	}
+            tabela.Campos = campos;
+
+            return tabela;
+        }
+    }
 }
