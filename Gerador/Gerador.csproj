@@ -67,43 +67,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormAndroid.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAndroid.Designer.cs">
-      <DependentUpon>FormAndroid.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormBanco.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormBanco.Designer.cs">
       <DependentUpon>FormBanco.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormNavegador.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormNavegador.Designer.cs">
-      <DependentUpon>FormNavegador.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormPrincipal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormPrincipal.Designer.cs">
-      <DependentUpon>FormPrincipal.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormAndroid.resx">
-      <DependentUpon>FormAndroid.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormBanco.resx">
       <DependentUpon>FormBanco.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormNavegador.resx">
-      <DependentUpon>FormNavegador.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormPrincipal.resx">
-      <DependentUpon>FormPrincipal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
