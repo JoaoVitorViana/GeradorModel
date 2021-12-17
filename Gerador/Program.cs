@@ -13,7 +13,8 @@ namespace Gerador
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormBanco());
+            //Application.Run(new FormBanco());
+            Application.Run(new FormGerar());
         }
     }
 }

@@ -73,6 +73,7 @@
     <Compile Include="Models\UserDB.cs" />
     <Compile Include="Models\VendaSgv.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="React.cs" />
     <Compile Include="Requisicao.cs" />
     <Compile Include="TipoLayout.cs" />
     <Compile Include="Util.cs" />
